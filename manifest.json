@@ -1,0 +1,40 @@
+{
+    "name": "Zerobin",
+    "id": "zerobin",
+    "description": {
+        "en": "A minimalist, opensource online pastebin where the server has zero knowledge of pasted data"
+    },
+    "developer": {
+        "name": "julien",
+        "email": "julien.malik@paraiso.me",
+        "url": "http://sebsauvage.net/wiki/doku.php?id=php:zerobin"
+    },
+    "multi_instance": "false",
+    "arguments": {
+        "install" : [
+            {
+                "name": "domain",
+                "ask": {
+                    "en": "Choose a domain for Zerobin"
+                },
+                "example": "domain.org"
+            },
+            {
+                "name": "path",
+                "ask": {
+                    "en": "Choose a path for Zerobin"
+                },
+                "example": "/zerobin",
+                "default": "/zerobin"
+            },
+            {
+                "name": "is_public",
+                "ask": {
+                    "en": "Is it a public Zerobin site ?"
+                },
+                "choices": ["Yes", "No"],
+                "default": "Yes"
+            }
+        ]
+    }
+}
