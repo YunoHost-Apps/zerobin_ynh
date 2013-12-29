@@ -1,6 +1,6 @@
 #!/bin/bash
 
-domain=$(sudo yunohost app setting ttrss domain)
+domain=$(sudo yunohost app setting zerobin domain)
 
 sudo rm -rf /var/www/zerobin
 sudo rm -f /etc/nginx/conf.d/$domain.d/zerobin.conf
