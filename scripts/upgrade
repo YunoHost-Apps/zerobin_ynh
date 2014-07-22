@@ -29,9 +29,9 @@ sudo cp ../conf/nginx.conf $nginxconf
 sudo chown root: $nginxconf
 sudo chmod 600 $nginxconf
 
-if [ $is_public = "Yes" ];
+if [ "$is_public" = "Yes" ];
 then
-  sudo yunohost app setting zerobin skipped_uris -v "/" 
+  sudo yunohost app setting zerobin skipped_uris -v "/"
 fi
 
 sudo service nginx reload
