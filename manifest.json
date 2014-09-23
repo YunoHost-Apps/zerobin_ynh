@@ -5,6 +5,7 @@
         "en": "A minimalist, opensource online pastebin where the server has zero knowledge of pasted data",
         "fr": "Un pastebin minimaliste, libre et où le serveur n'a aucune connaissance des données copiées"
     },
+    "licence": "Zlib",
     "developer": {
         "name": "julien",
         "email": "julien.malik@paraiso.me",
