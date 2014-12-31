@@ -5,16 +5,17 @@
         "en": "A minimalist, opensource online pastebin where the server has zero knowledge of pasted data",
         "fr": "Un pastebin minimaliste, libre et où le serveur n'a aucune connaissance des données copiées"
     },
-    "developer": {
+    "url": "http://sebsauvage.net/wiki/doku.php?id=php:zerobin",
+    "maintainer": {
         "name": "julien",
-        "email": "julien.malik@paraiso.me",
-        "url": "http://sebsauvage.net/wiki/doku.php?id=php:zerobin"
+        "email": "julien.malik@paraiso.me"
     },
     "multi_instance": "false",
     "arguments": {
         "install" : [
             {
                 "name": "domain",
+                "type": "domain",
                 "ask": {
                     "en": "Choose a domain for Zerobin",
                     "fr": "Choisissez un domaine pour Zerobin"
@@ -23,6 +24,7 @@
             },
             {
                 "name": "path",
+                "type": "path",
                 "ask": {
                     "en": "Choose a path for Zerobin",
                     "fr": "Choisissez un chemin pour Zerobin"
