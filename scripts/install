@@ -11,6 +11,11 @@ if [[ ! $? -eq 0 ]]; then
     exit 1
 fi
 
+# Remove trailing "/" for next commands
+if [[ ! "$path" == "/" ]]; then
+    path=${path%/}
+fi
+
 # Copy files to the right place
 final_path=/var/www/zerobin
 sudo mkdir -p $final_path
