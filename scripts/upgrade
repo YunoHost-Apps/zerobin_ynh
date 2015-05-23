@@ -5,7 +5,9 @@ path=$(sudo yunohost app setting zerobin path)
 is_public=$(sudo yunohost app setting zerobin is_public)
 
 # Remove trailing "/" for next commands
-path=${path%/}
+if [[ ! "$path" == "/" ]]; then
+    path=${path%/}
+fi
 
 # Copy files to the right place
 final_path=/var/www/zerobin
