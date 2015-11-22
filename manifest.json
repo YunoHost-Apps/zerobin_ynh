@@ -11,6 +11,9 @@
         "email": "julien.malik@paraiso.me"
     },
     "multi_instance": "false",
+    "services": [
+        "nginx"
+    ],
     "arguments": {
         "install" : [
             {
