@@ -3,9 +3,12 @@
 source /usr/share/yunohost/helpers
 source ./_common
 
-domain=$(sudo yunohost app setting zerobin domain)
-path=$(sudo yunohost app setting zerobin path)
-is_public=$(sudo yunohost app setting zerobin is_public)
+app=$YNH_APP_INSTANCE_NAME
+
+domain=$(sudo yunohost app setting $app domain)
+path=$(sudo yunohost app setting $app path)
+is_public=$(sudo yunohost app setting $app is_public)
+
 
 # Remove trailing "/" for next commands
 if [[ ! "$path" == "/" ]]; then
@@ -13,7 +16,7 @@ if [[ ! "$path" == "/" ]]; then
 fi
 
 # Init final_path, if ever it got deleted somehow
-final_path=/var/www/zerobin
+final_path=/var/www/$app
 sudo mkdir -p $final_path
 
 # Clean up
@@ -35,15 +38,15 @@ sudo chmod 700 $final_path/{data,tmp}
 # Modify Nginx configuration file and copy it to Nginx conf directory
 sed -i "s@YNH_WWW_PATH@$path@g" ../conf/nginx.conf
 sed -i "s@YNH_WWW_ALIAS@$final_path/@g" ../conf/nginx.conf
-nginxconf=/etc/nginx/conf.d/$domain.d/zerobin.conf
+nginxconf=/etc/nginx/conf.d/$domain.d/$app.conf
 sudo cp ../conf/nginx.conf $nginxconf
 sudo chown root: $nginxconf
 sudo chmod 600 $nginxconf
 
 if [ "$is_public" = "Yes" ];
 then
-  sudo yunohost app setting zerobin skipped_uris -d
-  sudo yunohost app setting zerobin unprotected_uris -v "/"
+  sudo yunohost app setting $app skipped_uris -d
+  sudo yunohost app setting $app unprotected_uris -v "/"
 fi
 
 sudo service nginx reload

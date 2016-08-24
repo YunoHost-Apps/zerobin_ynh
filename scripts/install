@@ -8,8 +8,10 @@ domain=$1
 path=$2
 is_public=$3
 
+app=$YNH_APP_INSTANCE_NAME
+
 # Check domain/path availability
-sudo yunohost app checkurl $domain$path -a zerobin
+sudo yunohost app checkurl $domain$path -a $app
 if [[ ! $? -eq 0 ]]; then
     exit 1
 fi
@@ -20,7 +22,7 @@ if [[ ! "$path" == "/" ]]; then
 fi
 
 # Copy files to the right place
-final_path=/var/www/zerobin
+final_path=/var/www/$app
 sudo mkdir -p $final_path
 extract_source $final_path
 
@@ -37,15 +39,15 @@ sudo chmod 700 $final_path/{data,tmp}
 # Modify Nginx configuration file and copy it to Nginx conf directory
 sed -i "s@YNH_WWW_PATH@$path@g" ../conf/nginx.conf
 sed -i "s@YNH_WWW_ALIAS@$final_path/@g" ../conf/nginx.conf
-nginxconf=/etc/nginx/conf.d/$domain.d/zerobin.conf
+nginxconf=/etc/nginx/conf.d/$domain.d/$app.conf
 sudo cp ../conf/nginx.conf $nginxconf
 sudo chown root: $nginxconf
 sudo chmod 600 $nginxconf
 
-sudo yunohost app setting zerobin is_public -v "$is_public"
+sudo yunohost app setting $app is_public -v "$is_public"
 if [ "$is_public" = "Yes" ];
 then
-  sudo yunohost app setting zerobin unprotected_uris -v "/"
+  sudo yunohost app setting $app unprotected_uris -v "/"
 fi
 
 sudo service nginx reload

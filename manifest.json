@@ -14,7 +14,7 @@
         "name": "julien",
         "email": "julien.malik@paraiso.me"
     },
-    "multi_instance": "false",
+    "multi_instance": "true",
     "services": [
         "nginx",
         "php5-fpm"
