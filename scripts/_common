@@ -1,0 +1,17 @@
+PRIVATEBIN_VERSION="0.22"
+PRIVATEBIN_SOURCE_URL="https://github.com/PrivateBin/PrivateBin/archive/${PRIVATEBIN_VERSION}.tar.gz"
+PRIVATEBIN_SOURCE_SHA256="cde40cf24af63e6908abbfff021c739258e99d1405d104992fc70f33adbadc25"
+
+extract_source() {
+  local DESTDIR=$1
+    
+  # retrieve and extract Roundcube tarball
+  rc_tarball="${DESTDIR}/privatebin.tar.gz"
+  sudo wget -q -O "$rc_tarball" "$PRIVATEBIN_SOURCE_URL" \
+    || ynh_die "Unable to download source tarball"
+  echo "$PRIVATEBIN_SOURCE_SHA256 $rc_tarball" | sha256sum -c >/dev/null \
+    || ynh_die "Invalid checksum of downloaded tarball"
+  sudo tar xf "$rc_tarball" -C "$DESTDIR" --strip-components 1 \
+    || ynh_die "Unable to extract source tarball"
+  sudo rm "$rc_tarball"
+}

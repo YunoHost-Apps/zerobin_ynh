@@ -1,5 +1,8 @@
 #!/bin/bash
 
+source /usr/share/yunohost/helpers
+source ./_common
+
 # Retrieve arguments
 domain=$1
 path=$2
@@ -19,7 +22,7 @@ fi
 # Copy files to the right place
 final_path=/var/www/zerobin
 sudo mkdir -p $final_path
-sudo cp -a ../sources/* $final_path
+extract_source $final_path
 
 # Files owned by root, www-data can just read
 sudo find $final_path -type f | xargs sudo chmod 644

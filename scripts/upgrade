@@ -1,5 +1,8 @@
 #!/bin/bash
 
+source /usr/share/yunohost/helpers
+source ./_common
+
 domain=$(sudo yunohost app setting zerobin domain)
 path=$(sudo yunohost app setting zerobin path)
 is_public=$(sudo yunohost app setting zerobin is_public)
@@ -9,10 +12,16 @@ if [[ ! "$path" == "/" ]]; then
     path=${path%/}
 fi
 
-# Copy files to the right place
+# Init final_path, if ever it got deleted somehow
 final_path=/var/www/zerobin
 sudo mkdir -p $final_path
-sudo cp -a ../sources/* $final_path
+
+# Clean up
+# This will remove old paste data (otherwise we would need to lower down security)
+sudo rm -rf $final_path/*
+
+# Copy files to the right place
+extract_source $final_path
 
 # Files owned by root, www-data can just read
 sudo find $final_path -type f | xargs sudo chmod 644
@@ -20,7 +29,7 @@ sudo find $final_path -type d | xargs sudo chmod 755
 sudo chown -R root: $final_path
 
 # except for data and tmp subdir, where www-data must have write permissions
-sudo chown www-data:root $final_path/{data,tmp}
+sudo chown -R www-data:root $final_path/{data,tmp}
 sudo chmod 700 $final_path/{data,tmp}
 
 # Modify Nginx configuration file and copy it to Nginx conf directory
