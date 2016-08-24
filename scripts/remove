@@ -1,6 +1,8 @@
 #!/bin/bash
 
-domain=$(sudo yunohost app setting zerobin domain)
+app=$YNH_APP_INSTANCE_NAME
 
-sudo rm -rf /var/www/zerobin
-sudo rm -f /etc/nginx/conf.d/$domain.d/zerobin.conf
+domain=$(sudo yunohost app setting $app domain)
+
+sudo rm -rf /var/www/$app
+sudo rm -f /etc/nginx/conf.d/$domain.d/$app.conf
