@@ -51,8 +51,9 @@ fi
 sudo cp -a "./sources" $final_path
 
 # Set permissions
-sudo chown -R www-data:root $final_path/{conf,data,data/attic,data/cache,data/index,data/locks,data/media*,data/meta,data/pages,data/tmp,lib/plugins}
-sudo chmod -R 700 $final_path/{conf,data,data/attic,data/cache,data/index,data/locks,data/media*,data/meta,data/pages,data/tmp,lib/plugins}
+sudo chown -R root:root $final_path
+sudo chown -R www-data:root $final_path/{data,tmp}
+sudo chmod -R 700 $final_path/{data,tmp}
 
 # Restore conf files
 sudo cp -a "./conf/nginx.conf" $conf
