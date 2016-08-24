@@ -1,4 +1,0 @@
-# Might as well keep robots away for performance and privacy reasons.
-User-agent: *
-Allow: /index.php
-Disallow: /
