@@ -32,6 +32,7 @@ sudo find $final_path -type d | xargs sudo chmod 755
 sudo chown -R root: $final_path
 
 # except for data and tmp subdir, where www-data must have write permissions
+sudo mkdir -p $final_path/{data,tmp}
 sudo chown -R www-data:root $final_path/{data,tmp}
 sudo chmod 700 $final_path/{data,tmp}
 
