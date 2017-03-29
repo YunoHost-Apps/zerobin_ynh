@@ -1,10 +1,18 @@
 #!/bin/bash
 
+# Exit on command errors and treat unset variables as an error
+set -u
+
+# Source app helpers
+source /usr/share/yunohost/helpers
+
+# Get multi-instances specific variables
 app=$YNH_APP_INSTANCE_NAME
 
-domain=$(sudo yunohost app setting $app domain)
+# Retrieve arguments
+domain=$(ynh_app_setting_get "$app" domain)
 
 sudo rm -rf /var/www/$app
 sudo rm -f /etc/nginx/conf.d/$domain.d/$app.conf
 
-sudo service nginx reload
+sudo systemctl reload nginx

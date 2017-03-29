@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # causes the shell to exit if any subcommand or pipeline returns a non-zero status
-set -e
+set -eu
 
 # Source YNH helpers
-. /usr/share/yunohost/helpers
+source /usr/share/yunohost/helpers
 
 # This is a multi-instance app, meaning it can be installed several times independently
 # The id of the app as stated in the manifest is available as $YNH_APP_ID
@@ -19,15 +19,15 @@ set -e
 app=$YNH_APP_INSTANCE_NAME
 
 # Retrieve arguments
-domain=$(sudo yunohost app setting $app domain)
+domain=$(ynh_app_setting_get "$app" domain)
 
 # Backup directory location for the app from where the script is executed and 
 # which will be compressed afterward
 backup_dir=$YNH_APP_BACKUP_DIR
 
 # Backup sources & data
-ynh_backup "/var/www/$app" "sources"
+ynh_backup "/var/www/${app}" "sources"
 
 # Copy Nginx conf
 sudo mkdir -p ./conf
-ynh_backup "/etc/nginx/conf.d/$domain.d/$app.conf" "conf/nginx.conf"
+ynh_backup "/etc/nginx/conf.d/${domain}.d/${app}.conf" "conf/nginx.conf"
