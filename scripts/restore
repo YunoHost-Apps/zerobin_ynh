@@ -53,10 +53,9 @@ sudo chmod -R 700 $final_path/{data,tmp}
 sudo cp -a ./conf/nginx.conf "${nginx_conf}"
 
 # Set ssowat config
-ynh_app_setting_set "$app" is_public "$is_public"
-if [ "$is_public" = "Yes" ];
+if [ "$is_public" = "No" ];
 then
-  ynh_app_setting_set "$app" unprotected_uris "/"
+	ynh_app_setting_delete $app skipped_uris
 fi
 
 # Reload service
