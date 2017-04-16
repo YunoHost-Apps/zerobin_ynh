@@ -23,7 +23,21 @@ final_path=/var/www/$app
 sudo mkdir -p $final_path
 
 # Clean all files and directory except the data directory 
-sudo rm -rf $final_path/{cfg,CREDITS.md,i18n,index.php,js,README.md,tmp,CHANGELOG.md,css,favicon.ico,img,INSTALL.md,lib,robots.txt,tpl}
+ynh_secure_rm $final_path/cfg
+ynh_secure_rm $final_path/CREDITS.md
+ynh_secure_rm $final_path/i18n
+ynh_secure_rm $final_path/index.php
+ynh_secure_rm $final_path/js
+ynh_secure_rm $final_path/README.md
+ynh_secure_rm $final_path/tmp
+ynh_secure_rm $final_path/CHANGELOG.md
+ynh_secure_rm $final_path/css
+ynh_secure_rm $final_path/favicon.ico
+ynh_secure_rm $final_path/img
+ynh_secure_rm $final_path/INSTALL.md
+ynh_secure_rm $final_path/lib
+ynh_secure_rm $final_path/robots.txt
+ynh_secure_rm $final_path/tpl
 
 # Copy files to the right place
 extract_source $final_path

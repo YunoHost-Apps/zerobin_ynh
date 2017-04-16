@@ -5,6 +5,7 @@ set -u
 
 # Source app helpers
 source /usr/share/yunohost/helpers
+source ./_common
 
 # Get multi-instances specific variables
 app=$YNH_APP_INSTANCE_NAME
@@ -12,7 +13,7 @@ app=$YNH_APP_INSTANCE_NAME
 # Retrieve arguments
 domain=$(ynh_app_setting_get "$app" domain)
 
-sudo rm -rf /var/www/$app
-sudo rm -f /etc/nginx/conf.d/$domain.d/$app.conf
+ynh_secure_rm /var/www/$app
+ynh_secure_rm /etc/nginx/conf.d/$domain.d/$app.conf
 
 sudo systemctl reload nginx

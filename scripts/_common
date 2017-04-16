@@ -15,3 +15,8 @@ extract_source() {
     || ynh_die "Unable to extract source tarball"
   sudo rm "$rc_tarball"
 }
+
+ynh_secure_rm () {
+    [[ "/var/www /opt /home/yunohost.app" =~ $1 ]] \
+        || (test -n "$1" && sudo rm -Rf $1 )
+}
