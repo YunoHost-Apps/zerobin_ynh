@@ -24,7 +24,7 @@ sudo mkdir -p $final_path
 
 # Clean up
 # This will remove old paste data (otherwise we would need to lower down security)
-sudo rm -rf $final_path/*
+sudo rm -rf $final_path/{cfg,CREDITS.md,i18n,index.php,js,README.md,tmp,CHANGELOG.md,css,favicon.ico,img,INSTALL.md,lib,robots.txt,tpl}
 
 # Copy files to the right place
 extract_source $final_path
