@@ -1,14 +1,17 @@
 #!/bin/bash
 
+# Exit on command errors and treat unset variables as an error
+set -eu
+
 source /usr/share/yunohost/helpers
 source ./_common
 
 app=$YNH_APP_INSTANCE_NAME
 
-domain=$(sudo yunohost app setting $app domain)
-path=$(sudo yunohost app setting $app path)
-is_public=$(sudo yunohost app setting $app is_public)
-
+domain=$(ynh_app_setting_get "$app" domain)
+path=$(ynh_app_setting_get "$app" path)
+user=$(ynh_app_setting_get "$app" user)
+is_public=$(ynh_app_setting_get $app is_public)
 
 # Remove trailing "/" for next commands
 if [[ ! "$path" == "/" ]]; then
@@ -19,9 +22,8 @@ fi
 final_path=/var/www/$app
 sudo mkdir -p $final_path
 
-# Clean up
-# This will remove old paste data (otherwise we would need to lower down security)
-sudo rm -rf $final_path/*
+# Clean all files and directory except the data directory 
+sudo rm -rf $final_path/{cfg,CREDITS.md,i18n,index.php,js,README.md,tmp,CHANGELOG.md,css,favicon.ico,img,INSTALL.md,lib,robots.txt,tpl}
 
 # Copy files to the right place
 extract_source $final_path
@@ -44,11 +46,13 @@ sudo cp ../conf/nginx.conf $nginxconf
 sudo chown root: $nginxconf
 sudo chmod 600 $nginxconf
 
+# Set ssowat config
+ynh_app_setting_set "$app" is_public "$is_public"
 if [ "$is_public" = "Yes" ];
 then
-  sudo yunohost app setting $app skipped_uris -d
-  sudo yunohost app setting $app unprotected_uris -v "/"
+  ynh_app_setting_set "$app" unprotected_uris "/"
 fi
 
-sudo service nginx reload
+# Reload Nginx
+sudo systemctl reload nginx
 sudo yunohost app ssowatconf

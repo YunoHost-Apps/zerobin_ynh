@@ -1,20 +1,21 @@
 #!/bin/bash
 
+# Exit on command errors and treat unset variables as an error
+set -eu
+
 source /usr/share/yunohost/helpers
 source ./_common
 
 # Retrieve arguments
-domain=$1
-path=$2
-is_public=$3
+domain=$YNH_APP_ARG_DOMAIN
+path=$YNH_APP_ARG_PATH
+is_public=$YNH_APP_ARG_IS_PUBLIC
 
 app=$YNH_APP_INSTANCE_NAME
 
 # Check domain/path availability
-sudo yunohost app checkurl $domain$path -a $app
-if [[ ! $? -eq 0 ]]; then
-    exit 1
-fi
+sudo yunohost app checkurl "${domain}${path}" -a "$app" \
+    || ynh_die "Path not available: ${domain}${path}"
 
 # Remove trailing "/" for next commands
 if [[ ! "$path" == "/" ]]; then
@@ -44,11 +45,11 @@ sudo cp ../conf/nginx.conf $nginxconf
 sudo chown root: $nginxconf
 sudo chmod 600 $nginxconf
 
-sudo yunohost app setting $app is_public -v "$is_public"
-if [ "$is_public" = "Yes" ];
+# Set ssowat config
+if [ "$is_public" = "No" ];
 then
-  sudo yunohost app setting $app unprotected_uris -v "/"
+	ynh_app_setting_delete $app skipped_uris
 fi
 
-sudo service nginx reload
+sudo systemctl reload nginx
 sudo yunohost app ssowatconf
