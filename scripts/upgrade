@@ -22,8 +22,7 @@ fi
 final_path=/var/www/$app
 sudo mkdir -p $final_path
 
-# Clean up
-# This will remove old paste data (otherwise we would need to lower down security)
+# Clean all files and directory except the data directory 
 sudo rm -rf $final_path/{cfg,CREDITS.md,i18n,index.php,js,README.md,tmp,CHANGELOG.md,css,favicon.ico,img,INSTALL.md,lib,robots.txt,tpl}
 
 # Copy files to the right place
