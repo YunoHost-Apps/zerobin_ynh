@@ -15,5 +15,6 @@ domain=$(ynh_app_setting_get "$app" domain)
 
 ynh_secure_rm /var/www/$app
 ynh_secure_rm /etc/nginx/conf.d/$domain.d/$app.conf
+ynh_remove_fpm
 
 sudo systemctl reload nginx

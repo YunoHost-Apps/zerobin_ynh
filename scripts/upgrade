@@ -38,6 +38,7 @@ ynh_secure_rm $final_path/INSTALL.md
 ynh_secure_rm $final_path/lib
 ynh_secure_rm $final_path/robots.txt
 ynh_secure_rm $final_path/tpl
+ynh_secure_rm $final_path/data
 
 # Copy files to the right place
 extract_source $final_path
@@ -59,6 +60,9 @@ nginxconf=/etc/nginx/conf.d/$domain.d/$app.conf
 sudo cp ../conf/nginx.conf $nginxconf
 sudo chown root: $nginxconf
 sudo chmod 600 $nginxconf
+
+# Create the php-fpm pool config
+ynh_pool_fpm
 
 # Set ssowat config
 ynh_app_setting_set "$app" is_public "$is_public"

@@ -45,6 +45,9 @@ sudo cp ../conf/nginx.conf $nginxconf
 sudo chown root: $nginxconf
 sudo chmod 600 $nginxconf
 
+# Create the php-fpm pool config
+ynh_pool_fpm
+
 # Set ssowat config
 if [ "$is_public" = "No" ];
 then
