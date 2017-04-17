@@ -3,8 +3,9 @@
 # Exit on command errors and treat unset variables as an error
 set -eu
 
-source /usr/share/yunohost/helpers
+# Source app helpers
 source ./_common
+source /usr/share/yunohost/helpers
 
 # Retrieve arguments
 domain=$YNH_APP_ARG_DOMAIN
@@ -27,14 +28,17 @@ final_path=/var/www/$app
 sudo mkdir -p $final_path
 extract_source $final_path
 
-# Files owned by root, www-data can just read
+# Create system user dedicace for this app
+ynh_system_user_create $app
+
+# Files owned by user specific can just read
 sudo find $final_path -type f | xargs sudo chmod 644
 sudo find $final_path -type d | xargs sudo chmod 755
-sudo chown -R root: $final_path
+sudo chown -R $app: $final_path
 
 # except for data and tmp subdir, where www-data must have write permissions
 sudo mkdir -p $final_path/{data,tmp}
-sudo chown -R www-data:root $final_path/{data,tmp}
+sudo chown -R $app:root $final_path/{data,tmp}
 sudo chmod 700 $final_path/{data,tmp}
 
 # Modify Nginx configuration file and copy it to Nginx conf directory
@@ -46,7 +50,7 @@ sudo chown root: $nginxconf
 sudo chmod 600 $nginxconf
 
 # Create the php-fpm pool config
-ynh_pool_fpm
+ynh_fpm_config
 
 # Set ssowat config
 if [ "$is_public" = "No" ];

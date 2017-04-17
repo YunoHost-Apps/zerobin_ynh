@@ -2,6 +2,26 @@ PRIVATEBIN_VERSION="1.1"
 PRIVATEBIN_SOURCE_URL="https://github.com/PrivateBin/PrivateBin/archive/${PRIVATEBIN_VERSION}.tar.gz"
 PRIVATEBIN_SOURCE_SHA256="61d18753c792d83f54ad9e414d1d32198ab873054907081e732effd5ccbe96ef"
 
+# Substitute a string by another in a file
+#
+# usage: ynh_substitute_char string_to_find replace_string file_to_analyse
+# | arg: string_to_find - String to replace in the file
+# | arg: replace_string - New string that will replace
+# | arg: file_to_analyse - File where the string will be replaced.
+ynh_substitute_char () {
+  delimit=@
+  match_char=${1//${delimit}/"\\${delimit}"}  # Escape the delimiter if it's in the string.
+  replace_char=${2//${delimit}/"\\${delimit}"}
+  workfile=$3
+
+  sudo sed --in-place "s${delimit}${match_char}${delimit}${replace_char}${delimit}g" "$workfile"
+}
+
+ynh_store_checksum_config () {
+  config_file_checksum=checksum_${1//[\/ ]/_} # Replace all '/' and ' ' by '_'
+  ynh_app_setting_set $app $config_file_checksum $(sudo md5sum "$1" | cut -d' ' -f1)
+}
+
 extract_source() {
   local DESTDIR=$1
     
@@ -16,31 +36,112 @@ extract_source() {
   sudo rm "$rc_tarball"
 }
 
-ynh_pool_fpm () { # Create the php-fpm pool configuration file and configure it.
-  sed -i "s@__NAMETOCHANGE__@$app@g" ../conf/php-fpm.conf
-  sed -i "s@__FINALPATH__@$final_path@g" ../conf/php-fpm.conf
-  finalphpconf=/etc/php5/fpm/pool.d/$app.conf
-  sudo cp ../conf/php-fpm.conf $finalphpconf
-  sudo chown root: $finalphpconf
-  finalphpini=/etc/php5/fpm/conf.d/20-$app.ini
-  sudo cp ../conf/php-fpm.ini $finalphpini
-  sudo chown root: $finalphpini
+ynh_fpm_config () {
+  finalphpconf="/etc/php5/fpm/pool.d/$app.conf"
+  ynh_compare_checksum_config "$finalphpconf" 1
+  sudo cp ../conf/php-fpm.conf "$finalphpconf"
+  ynh_substitute_char "__NAMETOCHANGE__" "$app" "$finalphpconf"
+  ynh_substitute_char "__FINALPATH__" "$final_path" "$finalphpconf"
+  ynh_substitute_char "__USER__" "$app" "$finalphpconf"
+  sudo chown root: "$finalphpconf"
+  ynh_store_checksum_config "$finalphpconf"
+
+  if [ -e "../conf/php-fpm.ini" ]
+  then
+    finalphpini="/etc/php5/fpm/conf.d/20-$app.ini"
+    ynh_compare_checksum_config "$finalphpini" 1
+    sudo cp ../conf/php-fpm.ini "$finalphpini"
+    sudo chown root: "$finalphpini"
+    ynh_store_checksum_config "$finalphpini"
+  fi
+
   sudo systemctl reload php5-fpm
 }
 
-ynh_remove_fpm () {  # Delete pool php-fpm configuration
-  if [ -e "/etc/php5/fpm/pool.d/$app.conf" ]; then  # Delete fpm config
-    echo "Delete fpm config"
-    sudo rm "/etc/php5/fpm/pool.d/$app.conf"
-  fi
-  if [ -e "/etc/php5/fpm/conf.d/20-$app.ini" ]; then  # Delete php config
-    echo "Delete php config"
-    sudo rm "/etc/php5/fpm/conf.d/20-$app.ini"
-  fi
+ynh_remove_fpm_config () {
+  ynh_secure_remove "/etc/php5/fpm/pool.d/$app.conf"
+  ynh_secure_remove "/etc/php5/fpm/conf.d/20-$app.ini"
   sudo systemctl reload php5-fpm
 }
 
-ynh_secure_rm () {
-    [[ "/var/www /opt /home/yunohost.app" =~ $1 ]] \
-        || (test -n "$1" && sudo rm -Rf $1 )
+# Remove a file or a directory securely
+#
+# usage: ynh_secure_remove path_to_remove
+# | arg: path_to_remove - File or directory to remove
+ynh_secure_remove () {
+  path_to_remove=$1
+  forbidden_path=" \
+  /var/www \
+  /home/yunohost.app"
+
+  if [[ "$forbidden_path" =~ "$path_to_remove" \
+    # Match all path or subpath in $forbidden_path
+    || "$path_to_remove" =~ ^/[[:alnum:]]+$ \
+    # Match all first level path from / (Like /var, /root, etc...)
+    || "${path_to_remove:${#path_to_remove}-1}" = "/" ]]
+    # Match if the path finish by /. Because it's seems there is an empty variable
+  then
+    echo "Avoid deleting of $path_to_remove." >&2
+  else
+    if [ -e "$path_to_remove" ]
+    then
+      sudo rm -R "$path_to_remove"
+    else
+      echo "$path_to_remove doesn't deleted because it's not exist." >&2
+    fi
+  fi
+}
+
+# Create a system user
+#
+# usage: ynh_system_user_create user_name [home_dir]
+# | arg: user_name - Name of the system user that will be create
+# | arg: home_dir - Path of the home dir for the user. Usually the final path of the app. If this argument is omitted, the user will be created without home
+ynh_system_user_create () {
+  if ! ynh_system_user_exists "$1"  # Check if the user exists on the system
+  then  # If the user doesn't exist
+    if [ $# -ge 2 ]; then # If a home dir is mentioned
+      user_home_dir="-d $2"
+    else
+      user_home_dir="--no-create-home"
+    fi
+    sudo useradd $user_home_dir --system --user-group $1 --shell /usr/sbin/nologin || ynh_die "Unable to create $1 system account"
+  fi
+}
+
+# Delete a system user
+#
+# usage: ynh_system_user_delete user_name
+# | arg: user_name - Name of the system user that will be create
+ynh_system_user_delete () {
+    if ynh_system_user_exists "$1"  # Check if the user exists on the system
+    then
+    echo "Remove the user $1" >&2
+    sudo userdel $1
+  else
+    echo "The user $1 was not found" >&2
+    fi
+}
+
+ynh_compare_checksum_config () {
+  current_config_file=$1
+  compress_backup=${2:-0} # If $2 is empty, compress_backup will set at 0
+  config_file_checksum=checksum_${current_config_file//[\/ ]/_} # Replace all '/' and ' ' by '_'
+  checksum_value=$(ynh_app_setting_get $app $config_file_checksum)
+  if [ -n "$checksum_value" ]
+  then  # Proceed only if a value was stocked into the app config
+    if ! echo "$checksum_value $current_config_file" | md5sum -c --status
+    then  # If the checksum is now different
+      backup_config_file="$current_config_file.backup.$(date '+%d.%m.%y_%Hh%M,%Ss')"
+      if [ compress_backup -eq 1 ]
+      then
+        sudo tar --create --gzip --file "$backup_config_file.tar.gz" "$current_config_file" # Backup the current config file and compress
+        backup_config_file="$backup_config_file.tar.gz"
+      else
+        sudo cp -a "$current_config_file" "$backup_config_file" # Backup the current config file
+      fi
+      echo "Config file $current_config_file has been manually modified since the installation or last upgrade. So it has been duplicated in $backup_config_file" >&2
+      echo "$backup_config_file"  # Return the name of the backup file
+    fi
+  fi
 }
