@@ -34,7 +34,7 @@ ynh_system_user_create $app
 # Files owned by user specific can just read
 sudo find $final_path -type f | xargs sudo chmod 644
 sudo find $final_path -type d | xargs sudo chmod 755
-sudo chown -R $app: $final_path
+sudo chown -R root: $final_path
 
 # except for data and tmp subdir, where www-data must have write permissions
 sudo mkdir -p $final_path/{data,tmp}
