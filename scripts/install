@@ -9,19 +9,13 @@ source /usr/share/yunohost/helpers
 
 # Retrieve arguments
 domain=$YNH_APP_ARG_DOMAIN
-path=$YNH_APP_ARG_PATH
+path=$(ynh_normalize_url_path $YNH_APP_ARG_PATH)
 is_public=$YNH_APP_ARG_IS_PUBLIC
 
 app=$YNH_APP_INSTANCE_NAME
 
 # Check domain/path availability
-sudo yunohost app checkurl "${domain}${path}" -a "$app" \
-    || ynh_die "Path not available: ${domain}${path}"
-
-# Remove trailing "/" for next commands
-if [[ ! "$path" == "/" ]]; then
-    path=${path%/}
-fi
+sudo yunohost app checkurl "${domain}${path}" -a "$app"
 
 # Copy files to the right place
 final_path=/var/www/$app
@@ -44,6 +38,7 @@ sudo chmod 700 $final_path/{data,tmp}
 # Modify Nginx configuration file and copy it to Nginx conf directory
 sed -i "s@YNH_WWW_PATH@$path@g" ../conf/nginx.conf
 sed -i "s@YNH_WWW_ALIAS@$final_path/@g" ../conf/nginx.conf
+sed -i "s@YNH_NAME@$app@g" ../conf/nginx.conf
 nginxconf=/etc/nginx/conf.d/$domain.d/$app.conf
 sudo cp ../conf/nginx.conf $nginxconf
 sudo chown root: $nginxconf
@@ -53,9 +48,10 @@ sudo chmod 600 $nginxconf
 ynh_fpm_config
 
 # Set ssowat config
-if [ "$is_public" = "No" ];
+ynh_app_setting_set $app is_public "$is_public"
+if [ "$is_public" = "Yes" ];
 then
-	ynh_app_setting_delete $app skipped_uris
+  ynh_app_setting_set $app unprotected_uris "/"
 fi
 
 sudo systemctl reload nginx
