@@ -22,7 +22,7 @@ ynh_store_checksum_config () {
   ynh_app_setting_set $app $config_file_checksum $(sudo md5sum "$1" | cut -d' ' -f1)
 }
 
-extract_source() {
+extract_source () {
   local DESTDIR=$1
     
   # retrieve and extract Roundcube tarball
@@ -34,6 +34,41 @@ extract_source() {
   sudo tar xf "$rc_tarball" -C "$DESTDIR" --strip-components 1 \
     || ynh_die "Unable to extract source tarball"
   sudo rm "$rc_tarball"
+}
+
+
+# Add config nginx
+ynh_nginx_config () {
+  finalnginxconf="/etc/nginx/conf.d/$domain.d/$app.conf"
+  ynh_compare_checksum_config "$finalnginxconf" 1
+  sudo cp ../conf/nginx.conf "$finalnginxconf"
+
+  # To avoid a break by set -u, use a void substitution ${var:-}. If the variable is not set, it's simply set with an empty variable.
+  # Substitute in a nginx config file only if the variable is not empty
+  if test -n "${path:-}"; then
+    ynh_substitute_char "__PATH__" "$path" "$finalnginxconf"
+  fi
+  if test -n "${domain:-}"; then
+    ynh_substitute_char "__DOMAIN__" "$domain" "$finalnginxconf"
+  fi
+  if test -n "${port:-}"; then
+    ynh_substitute_char "__PORT__" "$port" "$finalnginxconf"
+  fi
+  if test -n "${app:-}"; then
+    ynh_substitute_char "__NAME__" "$app" "$finalnginxconf"
+  fi
+  if test -n "${final_path:-}"; then
+    ynh_substitute_char "__FINALPATH__" "$final_path" "$finalnginxconf"
+  fi
+  ynh_store_checksum_config "$finalnginxconf"
+
+  sudo systemctl reload nginx
+}
+
+# Remove config nginx
+ynh_remove_nginx_config () {
+  ynh_secure_remove "/etc/nginx/conf.d/$domain.d/$app.conf"
+  sudo systemctl reload nginx
 }
 
 ynh_fpm_config () {

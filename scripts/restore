@@ -61,8 +61,12 @@ sudo chown -R root:root $final_path
 sudo chown -R www-data:root $final_path/{data,tmp}
 sudo chmod -R 700 $final_path/{data,tmp}
 
-# Restore configuration files
+# Restore nginx configuration files
 sudo cp -a ./conf/nginx.conf "${nginx_conf}"
+
+# Restore php-fpm configuration files
+sudo cp -a ./conf/php-fpm.conf "${phpfpm_conf}"
+sudo cp -a ./conf/php-fpm.ini "${phpfpm_ini}"
 
 # Set ssowat config
 if [ "$is_public" = "No" ];
