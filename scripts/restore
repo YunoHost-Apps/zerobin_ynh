@@ -3,6 +3,12 @@
 # causes the shell to exit if any subcommand or pipeline returns a non-zero status
 set -eu
 
+if [ ! -e _common ]; then
+	# Fetch helpers file if not in current directory
+	sudo cp ../settings/scripts/_common ./_common
+	sudo chmod a+rx _common
+fi
+source _common
 # Source app helpers
 source /usr/share/yunohost/helpers
 
@@ -25,8 +31,7 @@ user=$(ynh_app_setting_get $app allowed_users)
 is_public=$(ynh_app_setting_get $app is_public)
 
 # Check domain/path availability
-sudo yunohost app checkurl "${domain}${path}" -a "$app" \
-    || ynh_die "Path not available: ${domain}${path}"
+sudo yunohost app checkurl "${domain}${path}" -a "$app"
 
 # Check $final_path
 final_path="/var/www/${app}"
@@ -52,28 +57,33 @@ if [ -f $phpfpm_ini ]; then
 	ynh_die "The PHP FPM INI configuration already exists at '${phpfpm_ini}'. 
 	You should safely delete it before restoring this app."
 fi
+# Create dedicated system user for this app
+ynh_system_user_create $app
 
 # Restore sources & data
 sudo cp -a "./sources" $final_path
 
 # Set permissions
 sudo chown -R root:root $final_path
-sudo chown -R www-data:root $final_path/{data,tmp}
+sudo chown -R $app:root $final_path/{data,tmp}
 sudo chmod -R 700 $final_path/{data,tmp}
 
 # Restore nginx configuration files
 sudo cp -a ./conf/nginx.conf "${nginx_conf}"
+sudo cp -a ./php-fpm.conf "$phpfpm_conf"
+sudo cp -a ./php-fpm.ini "$phpfpm_ini"
 
 # Restore php-fpm configuration files
 sudo cp -a ./conf/php-fpm.conf "${phpfpm_conf}"
 sudo cp -a ./conf/php-fpm.ini "${phpfpm_ini}"
 
 # Set ssowat config
-if [ "$is_public" = "No" ];
+if [ "$is_public" = "Yes" ];
 then
-	ynh_app_setting_delete $app skipped_uris
+  ynh_app_setting_set $app unprotected_uris "/"
 fi
 
 # Reload service
 sudo systemctl reload nginx
+sudo systemctl reload php5-fpm
 sudo yunohost app ssowatconf
