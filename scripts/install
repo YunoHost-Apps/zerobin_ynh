@@ -41,18 +41,10 @@ ynh_nginx_config
 # Create the php-fpm pool config
 ynh_fpm_config
 
-<<<<<<< HEAD
 # If app is public, add url to SSOWat conf as skipped_uris
 if [[ $is_public -eq 1 ]]; then
   # unprotected_uris allows SSO credentials to be passed anyway.
   ynh_app_setting_set "$app" unprotected_uris "/"
-=======
-# Set ssowat config
-ynh_app_setting_set $app is_public "$is_public"
-if [ "$is_public" = "Yes" ];
-then
-  ynh_app_setting_set $app unprotected_uris "/"
->>>>>>> ed68227b97ca7aa0f4e0d0f9450df936e867585f
 fi
 
 sudo systemctl reload nginx
