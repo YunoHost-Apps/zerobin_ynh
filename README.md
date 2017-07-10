@@ -1,5 +1,7 @@
 # Zerobin for Yunohost
 
+[![Install PrivateBin with YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=zerobin)
+
 ## Zerobin c'est quoi ?
 
 PrivateBin est un pastebin en ligne open source minimaliste où le serveur n'a aucune connaissance des données collées.
