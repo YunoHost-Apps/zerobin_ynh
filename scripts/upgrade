@@ -2,9 +2,9 @@
 
 # Exit on command errors and treat unset variables as an error
 set -eu
-
-source /usr/share/yunohost/helpers
+# Source app helpers
 source ./_common
+source /usr/share/yunohost/helpers
 
 app=$YNH_APP_INSTANCE_NAME
 
@@ -18,12 +18,30 @@ if [[ ! "$path" == "/" ]]; then
     path=${path%/}
 fi
 
+# Create system user dedicace for this app
+ynh_system_user_create $app
+
 # Init final_path, if ever it got deleted somehow
 final_path=/var/www/$app
 sudo mkdir -p $final_path
 
 # Clean all files and directory except the data directory 
-sudo rm -rf $final_path/{cfg,CREDITS.md,i18n,index.php,js,README.md,tmp,CHANGELOG.md,css,favicon.ico,img,INSTALL.md,lib,robots.txt,tpl}
+ynh_secure_remove $final_path/cfg
+ynh_secure_remove $final_path/CREDITS.md
+ynh_secure_remove $final_path/i18n
+ynh_secure_remove $final_path/index.php
+ynh_secure_remove $final_path/js
+ynh_secure_remove $final_path/README.md
+ynh_secure_remove $final_path/tmp
+ynh_secure_remove $final_path/CHANGELOG.md
+ynh_secure_remove $final_path/css
+ynh_secure_remove $final_path/favicon.ico
+ynh_secure_remove $final_path/img
+ynh_secure_remove $final_path/INSTALL.md
+ynh_secure_remove $final_path/lib
+ynh_secure_remove $final_path/robots.txt
+ynh_secure_remove $final_path/tpl
+ynh_secure_remove $final_path/data
 
 # Copy files to the right place
 extract_source $final_path
@@ -35,22 +53,22 @@ sudo chown -R root: $final_path
 
 # except for data and tmp subdir, where www-data must have write permissions
 sudo mkdir -p $final_path/{data,tmp}
-sudo chown -R www-data:root $final_path/{data,tmp}
+sudo chown -R $app:root $final_path/{data,tmp}
 sudo chmod 700 $final_path/{data,tmp}
 
 # Modify Nginx configuration file and copy it to Nginx conf directory
-sed -i "s@YNH_WWW_PATH@$path@g" ../conf/nginx.conf
-sed -i "s@YNH_WWW_ALIAS@$final_path/@g" ../conf/nginx.conf
-nginxconf=/etc/nginx/conf.d/$domain.d/$app.conf
-sudo cp ../conf/nginx.conf $nginxconf
-sudo chown root: $nginxconf
-sudo chmod 600 $nginxconf
+ynh_nginx_config
+
+# Create the php-fpm pool config
+ynh_fpm_config
 
 # Set ssowat config
-ynh_app_setting_set "$app" is_public "$is_public"
-if [ "$is_public" = "Yes" ];
-then
-  ynh_app_setting_set "$app" unprotected_uris "/"
+if [ "$is_public" = "Yes" ]; then
+	ynh_app_setting_set $app is_public 1 # Fixe is_public en booléen
+	is_public=1
+else
+	ynh_app_setting_set $app is_public 0
+ 	is_public=0
 fi
 
 # Reload Nginx

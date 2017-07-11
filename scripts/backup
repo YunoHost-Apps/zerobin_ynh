@@ -31,3 +31,6 @@ ynh_backup "/var/www/${app}" "sources"
 # Copy Nginx conf
 sudo mkdir -p ./conf
 ynh_backup "/etc/nginx/conf.d/${domain}.d/${app}.conf" "conf/nginx.conf"
+# Copy the php-fpm conf files
+ynh_backup "/etc/php5/fpm/pool.d/${app}.conf" "php-fpm.conf"
+ynh_backup "/etc/php5/fpm/conf.d/20-${app}.ini" "php-fpm.ini"

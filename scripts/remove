@@ -4,6 +4,7 @@
 set -u
 
 # Source app helpers
+source ./_common
 source /usr/share/yunohost/helpers
 
 # Get multi-instances specific variables
@@ -12,7 +13,10 @@ app=$YNH_APP_INSTANCE_NAME
 # Retrieve arguments
 domain=$(ynh_app_setting_get "$app" domain)
 
-sudo rm -rf /var/www/$app
-sudo rm -f /etc/nginx/conf.d/$domain.d/$app.conf
+ynh_secure_remove /var/www/$app
+ynh_secure_remove /etc/nginx/conf.d/$domain.d/$app.conf
+ynh_remove_fpm_config
+
+ynh_system_user_delete $app
 
 sudo systemctl reload nginx
