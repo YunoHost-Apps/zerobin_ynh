@@ -1,22 +1,52 @@
 #!/bin/bash
 
-# Exit on command errors and treat unset variables as an error
-set -u
+#=================================================
+# GENERIC START
+#=================================================
+# IMPORT GENERIC HELPERS
+#=================================================
 
-# Source app helpers
-source ./_common
 source /usr/share/yunohost/helpers
+
+#=================================================
+# LOAD SETTINGS
+#=================================================
 
 # Get multi-instances specific variables
 app=$YNH_APP_INSTANCE_NAME
 
 # Retrieve arguments
 domain=$(ynh_app_setting_get "$app" domain)
+final_path=$(ynh_app_setting_get $app final_path)
 
-ynh_secure_remove /var/www/$app
-ynh_secure_remove /etc/nginx/conf.d/$domain.d/$app.conf
+#=================================================
+# STANDARD REMOVE
+#=================================================
+# REMOVE APP MAIN DIR
+#=================================================
+
+# Remove the app directory securely
+ynh_secure_remove "$final_path"
+
+#=================================================
+# REMOVE NGINX CONFIGURATION
+#=================================================
+
+# Remove the dedicated nginx config
+ynh_remove_nginx_config
+
+#=================================================
+# REMOVE PHP-FPM CONFIGURATION
+#=================================================
+
+# Remove the dedicated php-fpm config
 ynh_remove_fpm_config
 
-ynh_system_user_delete $app
+#=================================================
+# GENERIC FINALIZATION
+#=================================================
+# REMOVE DEDICATED USER
+#=================================================
 
-sudo systemctl reload nginx
+# Delete a system user
+ynh_system_user_delete $app

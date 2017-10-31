@@ -1,51 +1,114 @@
 #!/bin/bash
 
-# Exit on command errors and treat unset variables as an error
-set -eu
+#=================================================
+# GENERIC START
+#=================================================
+# IMPORT GENERIC HELPERS
+#=================================================
 
-# Source app helpers
-source ./_common
 source /usr/share/yunohost/helpers
+
+#=================================================
+# MANAGE SCRIPT FAILURE
+#=================================================
+
+# Exit if an error occurs during the execution of the script
+ynh_abort_if_errors
+
+#=================================================
+# RETRIEVE ARGUMENTS FROM THE MANIFEST
+#=================================================
 
 # Retrieve arguments
 domain=$YNH_APP_ARG_DOMAIN
-path=$(ynh_normalize_url_path $YNH_APP_ARG_PATH)
+path_url=$YNH_APP_ARG_PATH
 is_public=$YNH_APP_ARG_IS_PUBLIC
 
 app=$YNH_APP_INSTANCE_NAME
 
-# Check domain/path availability
-sudo yunohost app checkurl "${domain}${path}" -a "$app"
+#=================================================
+# CHECK IF THE APP CAN BE INSTALLED WITH THESE ARGS
+#=================================================
 
-# Copy files to the right place
 final_path=/var/www/$app
-sudo mkdir -p $final_path
-extract_source $final_path
+test ! -e "$final_path" || ynh_die "This path already contains a folder"
 
-# Create system user dedicace for this app
+# Normalize the url path syntax
+path_url=$(ynh_normalize_url_path $path_url)
+
+# Check web path availability
+ynh_webpath_available $domain $path_url
+# Register (book) web path
+ynh_webpath_register $app $domain $path_url
+
+#=================================================
+# STORE SETTINGS FROM MANIFEST
+#=================================================
+
+ynh_app_setting_set $app domain $domain
+ynh_app_setting_set $app path $path_url
+ynh_app_setting_set $app is_public $is_public
+
+#=================================================
+# STANDARD MODIFICATIONS
+#=================================================
+# DOWNLOAD, CHECK AND UNPACK SOURCE
+#=================================================
+
+ynh_app_setting_set $app final_path $final_path
+# Download, check integrity, uncompress and patch the source from app.src
+ynh_setup_source "$final_path"
+
+#=================================================
+# NGINX CONFIGURATION
+#=================================================
+
+# Create a dedicated nginx config
+ynh_add_nginx_config
+
+#=================================================
+# CREATE DEDICATED USER
+#=================================================
+
+# Create a system user
 ynh_system_user_create $app
 
+#=================================================
+# PHP-FPM CONFIGURATION
+#=================================================
+
+# Create a dedicated php-fpm config
+ynh_add_fpm_config
+
+#=================================================
+# GENERIC FINALIZATION
+#=================================================
+# SECURE FILES AND DIRECTORIES
+#=================================================
+
+# Set permissions to app files
+chown -R root: $final_path
 # Files owned by user specific can just read
-sudo find $final_path -type f | xargs sudo chmod 644
-sudo find $final_path -type d | xargs sudo chmod 755
-sudo chown -R root: $final_path
+find $final_path -type f | xargs chmod 644
+find $final_path -type d | xargs chmod 755
 
-# except for data and tmp subdir, where www-data must have write permissions
-sudo mkdir -p $final_path/{data,tmp}
-sudo chown -R $app:root $final_path/{data,tmp}
-sudo chmod 700 $final_path/{data,tmp}
+# except for data and tmp subdir, where the user must have write permissions
+mkdir -p $final_path/{data,tmp}
+chown -R $app:root $final_path/{data,tmp}
+chmod 700 $final_path/{data,tmp}
 
-# Modify Nginx configuration file and copy it to Nginx conf directory
-ynh_nginx_config
-
-# Create the php-fpm pool config
-ynh_fpm_config
+#=================================================
+# SETUP SSOWAT
+#=================================================
 
 # If app is public, add url to SSOWat conf as skipped_uris
-if [[ $is_public -eq 1 ]]; then
+if [ $is_public -eq 1 ]; then
   # unprotected_uris allows SSO credentials to be passed anyway.
   ynh_app_setting_set "$app" unprotected_uris "/"
 fi
 
-sudo systemctl reload nginx
-sudo yunohost app ssowatconf
+#=================================================
+# RELOAD NGINX
+#=================================================
+
+systemctl reload nginx
