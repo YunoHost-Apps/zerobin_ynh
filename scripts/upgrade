@@ -27,7 +27,7 @@ final_path=$(ynh_app_setting_get $app final_path)
 if [ "$is_public" = "Yes" ]; then
 	ynh_app_setting_set $app is_public 1
 	is_public=1
-elif [ "$is_public" = "No" ]; then
+else
 	ynh_app_setting_set $app is_public 0
 	is_public=0
 fi
