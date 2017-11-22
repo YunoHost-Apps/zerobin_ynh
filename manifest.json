@@ -6,7 +6,7 @@
         "en": "A minimalist, opensource online pastebin where the server has zero knowledge of pasted data",
         "fr": "Un pastebin minimaliste, libre et où le serveur n'a aucune connaissance des données copiées"
     },
-    "version": "1.1",
+    "version": "1.1.1",
     "url": "http://sebsauvage.net/wiki/doku.php?id=php:zerobin",
     "license": "Zlib",
     "maintainer": {
