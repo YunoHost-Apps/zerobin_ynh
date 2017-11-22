@@ -30,6 +30,15 @@ if [ "$is_public" = "Yes" ]; then
 elif [ "$is_public" = "No" ]; then
 	ynh_app_setting_set $app is_public 0
 	is_public=0
+elif [ -z "$is_public" ]; then
+	if grep --quiet "unprotected_uris" "/etc/yunohost/apps/$app/settings.yml"
+	then
+		ynh_app_setting_set $app is_public 1
+		is_public=1
+	else
+		ynh_app_setting_set $app is_public 0
+		is_public=0
+	fi
 fi
 
 # If final_path doesn't exist, create it
