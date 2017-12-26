@@ -1,30 +1,102 @@
 #!/bin/bash
 
-# Exit on command errors and treat unset variables as an error
-set -eu
-# Source app helpers
-source ./_common
+#=================================================
+# GENERIC START
+#=================================================
+# IMPORT GENERIC HELPERS
+#=================================================
+
 source /usr/share/yunohost/helpers
+
+#=================================================
+# LOAD SETTINGS
+#=================================================
 
 app=$YNH_APP_INSTANCE_NAME
 
-domain=$(ynh_app_setting_get "$app" domain)
-path=$(ynh_app_setting_get "$app" path)
-user=$(ynh_app_setting_get "$app" user)
+domain=$(ynh_app_setting_get $app domain)
+path_url=$(ynh_app_setting_get $app path)
 is_public=$(ynh_app_setting_get $app is_public)
+final_path=$(ynh_app_setting_get $app final_path)
 
-# Remove trailing "/" for next commands
-if [[ ! "$path" == "/" ]]; then
-    path=${path%/}
+#=================================================
+# ENSURE DOWNWARD COMPATIBILITY
+#=================================================
+
+# Fix is_public as a boolean value
+if [ "$is_public" = "Yes" ]; then
+	ynh_app_setting_set $app is_public 1
+	is_public=1
+elif [ "$is_public" = "No" ]; then
+	ynh_app_setting_set $app is_public 0
+	is_public=0
+elif [ -z "$is_public" ]; then
+	if grep --quiet "unprotected_uris" "/etc/yunohost/apps/$app/settings.yml"
+	then
+		ynh_app_setting_set $app is_public 1
+		is_public=1
+	else
+		ynh_app_setting_set $app is_public 0
+		is_public=0
+	fi
 fi
 
-# Create system user dedicace for this app
+# If final_path doesn't exist, create it
+if [ -z $final_path ]; then
+	final_path=/var/www/$app
+	ynh_app_setting_set $app final_path $final_path
+fi
+
+#=================================================
+# BACKUP BEFORE UPGRADE THEN ACTIVE TRAP
+#=================================================
+
+# Backup the current version of the app
+ynh_backup_before_upgrade
+ynh_clean_setup () {
+	# restore it if the upgrade fails
+	ynh_restore_upgradebackup
+}
+# Exit if an error occurs during the execution of the script
+ynh_abort_if_errors
+
+#=================================================
+# CHECK THE PATH
+#=================================================
+
+# Normalize the URL path syntax
+path_url=$(ynh_normalize_url_path $path_url)
+
+#=================================================
+# STANDARD UPGRADE STEPS
+#=================================================
+# NGINX CONFIGURATION
+#=================================================
+
+# Create a dedicated nginx config
+ynh_add_nginx_config
+
+#=================================================
+# CREATE DEDICATED USER
+#=================================================
+
+# Create a system user
 ynh_system_user_create $app
 
-# Init final_path, if ever it got deleted somehow
-final_path=/var/www/$app
-sudo mkdir -p $final_path
+#=================================================
+# PHP-FPM CONFIGURATION
+#=================================================
 
+# Create a dedicated php-fpm config
+ynh_add_fpm_config
+
+#=================================================
+# SPECIFIC UPGRADE
+#=================================================
+# REMOVE OLD FILES
+#=================================================
+
+# ??? Maybe julienmalik can explain us why he would remove all this files.
 # Clean all files and directory except the data directory 
 ynh_secure_remove $final_path/cfg
 ynh_secure_remove $final_path/CREDITS.md
@@ -43,34 +115,46 @@ ynh_secure_remove $final_path/robots.txt
 ynh_secure_remove $final_path/tpl
 ynh_secure_remove $final_path/data
 
-# Copy files to the right place
-extract_source $final_path
+#=================================================
+# DOWNLOAD, CHECK AND UNPACK SOURCE
+#=================================================
 
-# Files owned by root, www-data can just read
-sudo find $final_path -type f | xargs sudo chmod 644
-sudo find $final_path -type d | xargs sudo chmod 755
-sudo chown -R root: $final_path
+# Download, check integrity, uncompress and patch the source from app.src
+ynh_setup_source "$final_path"
 
-# except for data and tmp subdir, where www-data must have write permissions
-sudo mkdir -p $final_path/{data,tmp}
-sudo chown -R $app:root $final_path/{data,tmp}
-sudo chmod 700 $final_path/{data,tmp}
+#=================================================
+# GENERIC FINALIZATION
+#=================================================
+# SECURE FILES AND DIRECTORIES
+#=================================================
 
-# Modify Nginx configuration file and copy it to Nginx conf directory
-ynh_nginx_config
+# Set permissions to app files
+chown -R root: $final_path
+# Files owned by user specific can just read
+find $final_path -type f | xargs chmod 644
+find $final_path -type d | xargs chmod 755
 
-# Create the php-fpm pool config
-ynh_fpm_config
+# except for data and tmp subdir, where the user must have write permissions
+mkdir -p $final_path/{data,tmp}
+chown -R $app:root $final_path/{data,tmp}
+chmod 700 $final_path/{data,tmp}
 
-# Set ssowat config
-if [ "$is_public" = "Yes" ]; then
-	ynh_app_setting_set $app is_public 1 # Fixe is_public en booléen
-	is_public=1
-else
-	ynh_app_setting_set $app is_public 0
- 	is_public=0
+#=================================================
+# SETUP SSOWAT
+#=================================================
+
+#=================================================
+# SETUP SSOWAT
+#=================================================
+
+# If app is public, add url to SSOWat conf as skipped_uris
+if [ $is_public -eq 1 ]; then
+  # unprotected_uris allows SSO credentials to be passed anyway.
+  ynh_app_setting_set "$app" unprotected_uris "/"
 fi
 
-# Reload Nginx
-sudo systemctl reload nginx
-sudo yunohost app ssowatconf
+#=================================================
+# RELOAD NGINX
+#=================================================
+
+systemctl reload nginx

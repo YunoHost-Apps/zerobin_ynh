@@ -1,86 +1,78 @@
 #!/bin/bash
 
-# causes the shell to exit if any subcommand or pipeline returns a non-zero status
-set -eu
+#=================================================
+# GENERIC START
+#=================================================
+# IMPORT GENERIC HELPERS
+#=================================================
 
-if [ ! -e _common ]; then
-	# Fetch helpers file if not in current directory
-	sudo cp ../settings/scripts/_common ./_common
-	sudo chmod a+rx _common
-fi
-source _common
-# Source app helpers
 source /usr/share/yunohost/helpers
 
-# This is a multi-instance app, meaning it can be installed several times independently
-# The id of the app as stated in the manifest is available as $YNH_APP_ID
-# The instance number is available as $YNH_APP_INSTANCE_NUMBER (equals "1", "2", ...)
-# The app instance name is available as $YNH_APP_INSTANCE_NAME
-#    - the first time the app is installed, YNH_APP_INSTANCE_NAME = ynhexample
-#    - the second time the app is installed, YNH_APP_INSTANCE_NAME = ynhexample__2
-#    - ynhexample__{N} for the subsequent installations, with N=3,4, ...
-# The app instance name is probably what you are interested the most, since this is
-# guaranteed to be unique. This is a good unique identifier to define installation path,
-# db names, ...
+#=================================================
+# MANAGE SCRIPT FAILURE
+#=================================================
+
+# Exit if an error occurs during the execution of the script
+ynh_abort_if_errors
+
+#=================================================
+# LOAD SETTINGS
+#=================================================
+
 app=$YNH_APP_INSTANCE_NAME
 
-# Retrieve arguments
-domain=$(ynh_app_setting_get "$app" domain)
-path=$(ynh_app_setting_get "$app" path)
-user=$(ynh_app_setting_get $app allowed_users)
-is_public=$(ynh_app_setting_get $app is_public)
+domain=$(ynh_app_setting_get $app domain)
+path_url=$(ynh_app_setting_get $app path)
+final_path=$(ynh_app_setting_get $app final_path)
 
-# Check domain/path availability
-sudo yunohost app checkurl "${domain}${path}" -a "$app"
+#=================================================
+# CHECK IF THE APP CAN BE RESTORED
+#=================================================
 
-# Check $final_path
-final_path="/var/www/${app}"
-if [ -d $final_path ]; then
-	ynh_die "There is already a directory: $final_path"
-fi
+ynh_webpath_available $domain $path_url \
+	|| ynh_die "Path not available: ${domain}${path_url}"
+test ! -d $final_path \
+	|| ynh_die "There is already a directory: $final_path "
 
-# Check configuration files
-nginx_conf="/etc/nginx/conf.d/${domain}.d/${app}.conf"
-if [ -f $nginx_conf ]; then
-	ynh_die "The NGINX configuration already exists at '${nginx_conf}'. 
-	You should safely delete it before restoring this app."
-fi
-# Check configuration files php-fpm
-phpfpm_conf="/etc/php5/fpm/pool.d/php-fpm-${app}.conf"
-if [ -f $phpfpm_conf ]; then 
-	ynh_die "The PHP FPM configuration already exists at '${phpfpm_conf}'. 
-	You should safely delete it before restoring this app."
-fi
+#=================================================
+# STANDARD RESTORATION STEPS
+#=================================================
+# RESTORE THE NGINX CONFIGURATION
+#=================================================
 
-phpfpm_ini="/etc/php5/fpm/conf.d/20-${app}.ini"
-if [ -f $phpfpm_ini ]; then
-	ynh_die "The PHP FPM INI configuration already exists at '${phpfpm_ini}'. 
-	You should safely delete it before restoring this app."
-fi
-# Create dedicated system user for this app
+ynh_restore_file "/etc/nginx/conf.d/$domain.d/$app.conf"
+
+#=================================================
+# RESTORE THE APP MAIN DIR
+#=================================================
+
+ynh_restore_file "$final_path"
+
+#=================================================
+# RECREATE THE DEDICATED USER
+#=================================================
+
+# Create the dedicated user (if not existing)
 ynh_system_user_create $app
 
-# Restore sources & data
-sudo cp -a "./sources" $final_path
+#=================================================
+# RESTORE USER RIGHTS
+#=================================================
 
-# Set permissions
-sudo chown -R root:root $final_path
-sudo chown -R $app:root $final_path/{data,tmp}
-sudo chmod -R 700 $final_path/{data,tmp}
+chown -R $app:root $final_path/{data,tmp}
 
-# Restore nginx configuration files
-sudo cp -a ./conf/nginx.conf "${nginx_conf}"
-# Restore php-fpm configuration files
-sudo cp -a ./php-fpm.conf "${phpfpm_conf}"
-sudo cp -a ./php-fpm.ini "${phpfpm_ini}"
+#=================================================
+# RESTORE THE PHP-FPM CONFIGURATION
+#=================================================
 
-# Set ssowat config
-if [ "$is_public" = "Yes" ];
-then
-  ynh_app_setting_set $app unprotected_uris "/"
-fi
+ynh_restore_file "/etc/php5/fpm/pool.d/$app.conf"
+ynh_restore_file "/etc/php5/fpm/conf.d/20-$app.ini"
 
-# Reload service
-sudo systemctl reload nginx
-sudo systemctl reload php5-fpm
-sudo yunohost app ssowatconf
+#=================================================
+# GENERIC FINALIZATION
+#=================================================
+# RELOAD NGINX AND PHP-FPM
+#=================================================
+
+systemctl reload php5-fpm
+systemctl reload nginx
