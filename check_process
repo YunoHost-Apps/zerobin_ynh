@@ -11,6 +11,7 @@
 		setup_private=1
 		setup_public=1
 		upgrade=1
+		upgrade=1	from_commit=42913fc917c98766b0cbba47a3b40148dffaac58
 		backup_restore=1
 		multi_instance=1
 		incorrect_path=1
@@ -30,3 +31,7 @@
 ;;; Options
 Email=
 Notification=none
+;;; Upgrade options
+	; commit=42913fc917c98766b0cbba47a3b40148dffaac58
+		name=Refactoring
+		manifest_arg=domain=DOMAIN&path=PATH&is_public=1&
