@@ -6,50 +6,61 @@
 # IMPORT GENERIC HELPERS
 #=================================================
 
+# source _common.sh
 source /usr/share/yunohost/helpers
 
 #=================================================
 # LOAD SETTINGS
 #=================================================
+ynh_script_progression --message="Loading installation settings..."
 
 app=$YNH_APP_INSTANCE_NAME
 
-domain=$(ynh_app_setting_get $app domain)
-path_url=$(ynh_app_setting_get $app path)
-is_public=$(ynh_app_setting_get $app is_public)
-final_path=$(ynh_app_setting_get $app final_path)
+domain=$(ynh_app_setting_get --app=$app --key=domain)
+path_url=$(ynh_app_setting_get --app=$app --key=path)
+is_public=$(ynh_app_setting_get --app=$app --key=is_public)
+final_path=$(ynh_app_setting_get --app=$app --key=final_path)
+
+#=================================================
+# CHECK VERSION
+#=================================================
+
+upgrade_type=$(ynh_check_app_version_changed)
 
 #=================================================
 # ENSURE DOWNWARD COMPATIBILITY
 #=================================================
+ynh_script_progression --message="Ensuring downward compatibility..."
 
 # Fix is_public as a boolean value
 if [ "$is_public" = "Yes" ]; then
-	ynh_app_setting_set $app is_public 1
+	ynh_app_setting_set --app=$app --key=is_public --value=1
 	is_public=1
 elif [ "$is_public" = "No" ]; then
-	ynh_app_setting_set $app is_public 0
+	ynh_app_setting_set --app=$app --key=is_public --value=0
 	is_public=0
-elif [ -z "$is_public" ]; then
+elif [ -z "$is_public" ]
+then
 	if grep --quiet "unprotected_uris" "/etc/yunohost/apps/$app/settings.yml"
 	then
-		ynh_app_setting_set $app is_public 1
+		ynh_app_setting_set --app=$app --key=is_public --value=1
 		is_public=1
 	else
-		ynh_app_setting_set $app is_public 0
+		ynh_app_setting_set --app=$app --key=is_public --value=0
 		is_public=0
 	fi
 fi
 
 # If final_path doesn't exist, create it
-if [ -z $final_path ]; then
+if [ -z "$final_path" ]; then
 	final_path=/var/www/$app
-	ynh_app_setting_set $app final_path $final_path
+	ynh_app_setting_set --app=$app --key=final_path --value=$final_path
 fi
 
 #=================================================
 # BACKUP BEFORE UPGRADE THEN ACTIVE TRAP
 #=================================================
+ynh_script_progression --message="Backing up the app before upgrading (may take a while)..." --weight=3
 
 # Backup the current version of the app
 ynh_backup_before_upgrade
@@ -70,8 +81,21 @@ path_url=$(ynh_normalize_url_path $path_url)
 #=================================================
 # STANDARD UPGRADE STEPS
 #=================================================
+# DOWNLOAD, CHECK AND UNPACK SOURCE
+#=================================================
+
+if [ "$upgrade_type" == "UPGRADE_APP" ]
+then
+	ynh_script_progression --message="Upgrading source files..." --weight=3
+
+	# Download, check integrity, uncompress and patch the source from app.src
+	ynh_setup_source --dest_dir="$final_path"
+fi
+
+#=================================================
 # NGINX CONFIGURATION
 #=================================================
+ynh_script_progression --message="Upgrading nginx web server configuration..."
 
 # Create a dedicated nginx config
 ynh_add_nginx_config
@@ -79,48 +103,18 @@ ynh_add_nginx_config
 #=================================================
 # CREATE DEDICATED USER
 #=================================================
+ynh_script_progression --message="Making sure dedicated system user exists..." --weight=2
 
-# Create a system user
-ynh_system_user_create $app
+# Create a dedicated user (if not existing)
+ynh_system_user_create --username=$app
 
 #=================================================
 # PHP-FPM CONFIGURATION
 #=================================================
+ynh_script_progression --message="Upgrading php-fpm configuration..." --weight=3
 
 # Create a dedicated php-fpm config
 ynh_add_fpm_config
-
-#=================================================
-# SPECIFIC UPGRADE
-#=================================================
-# REMOVE OLD FILES
-#=================================================
-
-# ??? Maybe julienmalik can explain us why he would remove all this files.
-# Clean all files and directory except the data directory 
-ynh_secure_remove $final_path/cfg
-ynh_secure_remove $final_path/CREDITS.md
-ynh_secure_remove $final_path/i18n
-ynh_secure_remove $final_path/index.php
-ynh_secure_remove $final_path/js
-ynh_secure_remove $final_path/README.md
-ynh_secure_remove $final_path/tmp
-ynh_secure_remove $final_path/CHANGELOG.md
-ynh_secure_remove $final_path/css
-ynh_secure_remove $final_path/favicon.ico
-ynh_secure_remove $final_path/img
-ynh_secure_remove $final_path/INSTALL.md
-ynh_secure_remove $final_path/lib
-ynh_secure_remove $final_path/robots.txt
-ynh_secure_remove $final_path/tpl
-ynh_secure_remove $final_path/data
-
-#=================================================
-# DOWNLOAD, CHECK AND UNPACK SOURCE
-#=================================================
-
-# Download, check integrity, uncompress and patch the source from app.src
-ynh_setup_source "$final_path"
 
 #=================================================
 # GENERIC FINALIZATION
@@ -142,19 +136,23 @@ chmod 700 $final_path/{data,tmp}
 #=================================================
 # SETUP SSOWAT
 #=================================================
-
-#=================================================
-# SETUP SSOWAT
-#=================================================
+ynh_script_progression --message="Upgrading SSOwat configuration..."
 
 # If app is public, add url to SSOWat conf as skipped_uris
 if [ $is_public -eq 1 ]; then
   # unprotected_uris allows SSO credentials to be passed anyway.
-  ynh_app_setting_set "$app" unprotected_uris "/"
+  ynh_app_setting_set --app=$app --key=unprotected_uris --value="/"
 fi
 
 #=================================================
 # RELOAD NGINX
 #=================================================
+ynh_script_progression --message="Reloading nginx web server..."
 
-systemctl reload nginx
+ynh_systemd_action --service_name=nginx --action=reload
+
+#=================================================
+# END OF SCRIPT
+#=================================================
+
+ynh_script_progression --message="Upgrade of $app completed" --last

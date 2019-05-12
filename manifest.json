@@ -6,7 +6,7 @@
         "en": "A minimalist, opensource online pastebin where the server has zero knowledge of pasted data",
         "fr": "Un pastebin minimaliste, libre et où le serveur n'a aucune connaissance des données copiées"
     },
-    "version": "1.1.1",
+    "version": "1.1.1~ynh2",
     "url": "http://sebsauvage.net/wiki/doku.php?id=php:zerobin",
     "license": "Zlib",
     "maintainer": {
@@ -14,7 +14,7 @@
         "email": "julien.malik@paraiso.me"
     },
     "requirements": {
-        "yunohost": ">= 2.7.2"
+        "yunohost": ">= 3.5"
     },
     "multi_instance": true,
     "services": [
@@ -49,7 +49,7 @@
                     "en": "Is it a public Zerobin site ?",
                     "fr": "Est-ce un site public ?"
                 },
-                "default": "true"
+                "default": true
             }
         ]
     }
