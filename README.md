@@ -37,9 +37,9 @@ This is a fork of ZeroBin, originally developed by Sébastien Sauvage. It was re
 
 #### Supported architectures
 
-* x86-64b - [![Build Status](https://ci-apps.yunohost.org/ci/logs/zerobin%20%28Official%29.svg)](https://ci-apps.yunohost.org/ci/apps/zerobin/)
-* ARMv8-A - [![Build Status](https://ci-apps-arm.yunohost.org/ci/logs/zerobin%20%28Official%29.svg)](https://ci-apps-arm.yunohost.org/ci/apps/zerobin/)
-* Jessie x86-64b - [![Build Status](https://ci-stretch.nohost.me/ci/logs/zerobin%20%28Official%29.svg)](https://ci-stretch.nohost.me/ci/apps/zerobin/)
+* x86-64b - [![Build Status](https://ci-apps.yunohost.org/ci/logs/zerobin%20%28Apps%29.svg)](https://ci-apps.yunohost.org/ci/apps/zerobin/)
+* ARMv8-A - [![Build Status](https://ci-apps-arm.yunohost.org/ci/logs/zerobin%20%28Apps%29.svg)](https://ci-apps-arm.yunohost.org/ci/apps/zerobin/)
+* Jessie x86-64b - [![Build Status](https://ci-stretch.nohost.me/ci/logs/zerobin%20%28Apps%29.svg)](https://ci-stretch.nohost.me/ci/apps/zerobin/)
 
 ## Limitations
 
@@ -55,6 +55,7 @@ This means that we have decided to delete the directory that allows us to save t
 
  * Report a bug: https://github.com/YunoHost-Apps/zerobin_ynh/issues
  * PrivateBin website: https://privatebin.info/
+ * PrivateBin repository: https://github.com/PrivateBin/PrivateBin
  * YunoHost website: https://yunohost.org/
 
 ---
