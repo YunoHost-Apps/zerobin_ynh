@@ -76,6 +76,24 @@ then
 fi
 
 #=================================================
+# UPDATE SSOWAT
+#=================================================
+ynh_script_progression --message="Reconfiguring SSOwat..."
+
+if [ $is_public -eq 0 ]
+then
+    # If the app is private, viewing images stays publicly accessible.
+    if [ "$new_path" == "/" ]; then
+        # If the path is /, clear it to prevent any error with the regex.
+        new_path=""
+    fi
+    # Modify the domain to be used in a regex
+    domain_regex=$(echo "$new_domain" | sed 's@-@.@g')
+    ynh_app_setting_set --app=$app --key=protected_regex --value="$domain_regex$new_path/$"
+    ynh_app_setting_set --app=$app --key=unprotected_regex --value="$domain_regex$new_path/.*$"
+fi
+
+#=================================================
 # GENERIC FINALISATION
 #=================================================
 # RELOAD NGINX

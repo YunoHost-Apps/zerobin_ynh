@@ -49,6 +49,10 @@
                     "en": "Is it a public Zerobin site ?",
                     "fr": "Est-ce un site public ?"
                 },
+                "help": {
+                    "en": "If private, only YunoHost users can create a paste, but everyone can read it.",
+                    "fr": "Si privé, seul les utilisateurs YunoHost peuvent créer un paste, mais tout le monde peut lire."
+                },
                 "default": true
             }
         ]

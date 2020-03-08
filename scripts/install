@@ -105,8 +105,14 @@ ynh_script_progression --message="Configuring SSOwat..."
 
 # If app is public, add url to SSOWat conf as skipped_uris
 if [ $is_public -eq 1 ]; then
-  # unprotected_uris allows SSO credentials to be passed anyway.
-  ynh_app_setting_set --app=$app --key=unprotected_uris --value="/"
+    # unprotected_uris allows SSO credentials to be passed anyway.
+    ynh_app_setting_set --app=$app --key=unprotected_uris --value="/"
+else
+    # If the app is private, viewing paste stays publicly accessible.
+    # Modify the domain to be used in a regex
+    domain_regex=$(echo "$domain" | sed 's@-@.@g')
+    ynh_app_setting_set --app=$app --key=protected_regex --value="$domain_regex$path_url/$"
+    ynh_app_setting_set --app=$app --key=unprotected_regex --value="$domain_regex$path_url/.*$"
 fi
 
 #=================================================
