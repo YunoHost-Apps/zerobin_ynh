@@ -3,6 +3,8 @@
 [![Integration level](https://dash.yunohost.org/integration/zerobin.svg)](https://dash.yunohost.org/appci/app/zerobin) ![](https://ci-apps.yunohost.org/ci/badges/zerobin.status.svg) ![](https://ci-apps.yunohost.org/ci/badges/zerobin.maintain.svg)  
 [![Install PrivateBin with YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=zerobin)
 
+*[Lire ce readme en français.](./README_fr.md)*
+
 > *This package allow you to install PrivateBin quickly and simply on a YunoHost server.  
 If you don't have YunoHost, please see [here](https://yunohost.org/#/install) to know how to install and enjoy it.*
 
