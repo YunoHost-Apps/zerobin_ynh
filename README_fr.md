@@ -1,12 +1,12 @@
 # PrivateBin pour YunoHost
 
-[![Integration level](https://dash.yunohost.org/integration/zerobin.svg)](https://dash.yunohost.org/appci/app/zerobin) ![](https://ci-apps.yunohost.org/ci/badges/zerobin.status.svg) ![](https://ci-apps.yunohost.org/ci/badges/zerobin.maintain.svg)  
-[![Install PrivateBin with YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=zerobin)
+[![Niveau d'intégration](https://dash.yunohost.org/integration/zerobin.svg)](https://dash.yunohost.org/appci/app/zerobin) ![](https://ci-apps.yunohost.org/ci/badges/zerobin.status.svg) ![](https://ci-apps.yunohost.org/ci/badges/zerobin.maintain.svg)  
+[![Installer PrivateBin avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=zerobin)
 
 *[Read this readme in english.](./README.md)* 
 
-> *Ce paquet vous permet d'installer Privatebin rapidement et simplement sur votre serveur Yunohost.  
-Si vous n'avez pas Yunohost, rendez-vous sur [Yunohost](https://yunohost.org/#/install) pour découvrir comment l'installer et l'utiliser.*
+> *Ce package vous permet d'installer Privatebin rapidement et simplement sur un serveur Yunohost.  
+Si vous n'avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour savoir comment l'installer et en profiter.*
 
 ## Vue d'ensemble
 
@@ -23,7 +23,7 @@ Il reste cependant compatible avec le schema original de stockage des données Z
 
 ![](https://privatebin.info/img/1.0/bootstrap.png)
 
-## Démonstration
+## Démo
 
 * [Demo YunoHost](https://demo.yunohost.org/zerobin/)
 * [Demo Privatebin](https://privatebin.net/)
@@ -34,11 +34,11 @@ Il reste cependant compatible avec le schema original de stockage des données Z
 
  * Documentation officielle : https://github.com/PrivateBin/PrivateBin/wiki
 
-## Fonctionnalités spécifiques à YunoHost
+## Caractéristiques spécifiques YunoHost
 
-#### support Multi-utilisateurs
+#### Support multi-utilisateurs
 
-#### Architectures matérielles supportées
+#### Architectures supportées
 
 * x86-64b - [![Build Status](https://ci-apps.yunohost.org/ci/logs/zerobin%20%28Apps%29.svg)](https://ci-apps.yunohost.org/ci/apps/zerobin/)
 * ARMv8-A - [![Build Status](https://ci-apps-arm.yunohost.org/ci/logs/zerobin%20%28Apps%29.svg)](https://ci-apps-arm.yunohost.org/ci/apps/zerobin/)
@@ -62,11 +62,10 @@ Dans la [documentation de mise à jour](https://github.com/PrivateBin/PrivateBin
 
 ---
 
-Info aux développeurs
+Informations pour les développeurs
 ----------------
 
 **Seulement si vous voulez utiliser une branche de test pour le codage, au lieu de fusionner directement dans la banche principale.**
-
 Merci de faire vos pull request dans la [branche testing](https://github.com/YunoHost-Apps/zerobin_ynh/tree/testing).
 
 Pour essayer la branche testing, procédez comme suit.
