@@ -25,8 +25,8 @@ Il reste cependant compatible avec le schema original de stockage des données Z
 
 ## Démo
 
-* [Demo YunoHost](https://demo.yunohost.org/zerobin/)
-* [Demo Privatebin](https://privatebin.net/)
+* [Démo YunoHost](https://demo.yunohost.org/zerobin/)
+* [Démo Privatebin](https://privatebin.net/)
 
 ## Configuration
 
