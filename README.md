@@ -3,6 +3,8 @@
 [![Integration level](https://dash.yunohost.org/integration/zerobin.svg)](https://dash.yunohost.org/appci/app/zerobin) ![](https://ci-apps.yunohost.org/ci/badges/zerobin.status.svg) ![](https://ci-apps.yunohost.org/ci/badges/zerobin.maintain.svg)  
 [![Install PrivateBin with YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=zerobin)
 
+*[Lire ce readme en français.](./README_fr.md)*
+
 > *This package allow you to install PrivateBin quickly and simply on a YunoHost server.  
 If you don't have YunoHost, please see [here](https://yunohost.org/#/install) to know how to install and enjoy it.*
 
@@ -14,7 +16,7 @@ Data is encrypted/decrypted in the browser using 256bit AES in Galois Counter mo
 
 This is a fork of ZeroBin, originally developed by Sébastien Sauvage. It was refactored to allow easier and cleaner extensions and has now much more features than the original. It is however still fully compatible to the original ZeroBin 0.19 data storage scheme. Therefore such installations can be upgraded to this fork without loosing any data.
 
-**Shipped version:** 1.1.1
+**Shipped version:** 1.3.4
 
 ## Screenshots
 
