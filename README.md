@@ -32,6 +32,7 @@ This is a fork of ZeroBin, originally developed by Sébastien Sauvage. It was re
 ## Documentation
 
  * Official documentation: https://github.com/PrivateBin/PrivateBin/wiki
+ * YunoHost documentation: https://yunohost.org/#/app_zerobin
 
 ## YunoHost specific features
 
