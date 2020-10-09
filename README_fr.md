@@ -5,7 +5,7 @@
 
 *[Read this readme in english.](./README.md)* 
 
-> *Ce package vous permet d'installer Privatebin rapidement et simplement sur un serveur Yunohost.  
+> *Ce package vous permet d'installer PrivateBin rapidement et simplement sur un serveur Yunohost.  
 Si vous n'avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour savoir comment l'installer et en profiter.*
 
 ## Vue d'ensemble
@@ -40,9 +40,8 @@ Il reste cependant compatible avec le schéma original de stockage des données 
 
 #### Architectures supportées
 
-* x86-64b - [![Build Status](https://ci-apps.yunohost.org/ci/logs/zerobin%20%28Apps%29.svg)](https://ci-apps.yunohost.org/ci/apps/zerobin/)
+* x86-64 - [![Build Status](https://ci-apps.yunohost.org/ci/logs/zerobin%20%28Apps%29.svg)](https://ci-apps.yunohost.org/ci/apps/zerobin/)
 * ARMv8-A - [![Build Status](https://ci-apps-arm.yunohost.org/ci/logs/zerobin%20%28Apps%29.svg)](https://ci-apps-arm.yunohost.org/ci/apps/zerobin/)
-* Jessie x86-64b - [![Build Status](https://ci-stretch.nohost.me/ci/logs/zerobin%20%28Apps%29.svg)](https://ci-stretch.nohost.me/ci/apps/zerobin/)
 
 ## Limitations
 
@@ -62,10 +61,8 @@ Dans la [documentation de mise à jour](https://github.com/PrivateBin/PrivateBin
 
 ---
 
-Informations pour les développeurs
-----------------
+## Informations pour les développeurs
 
-**Seulement si vous voulez utiliser une branche de test pour le codage, au lieu de fusionner directement dans la banche principale.**
 Merci de faire vos pull request dans la [branche testing](https://github.com/YunoHost-Apps/zerobin_ynh/tree/testing).
 
 Pour essayer la branche testing, procédez comme suit.

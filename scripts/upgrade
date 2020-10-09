@@ -12,7 +12,7 @@ source /usr/share/yunohost/helpers
 #=================================================
 # LOAD SETTINGS
 #=================================================
-ynh_script_progression --message="Loading installation settings..."
+ynh_script_progression --message="Loading installation settings..." --weight=1
 
 app=$YNH_APP_INSTANCE_NAME
 
@@ -20,6 +20,7 @@ domain=$(ynh_app_setting_get --app=$app --key=domain)
 path_url=$(ynh_app_setting_get --app=$app --key=path)
 is_public=$(ynh_app_setting_get --app=$app --key=is_public)
 final_path=$(ynh_app_setting_get --app=$app --key=final_path)
+phpversion=$(ynh_app_setting_get --app=$app --key=phpversion)
 
 #=================================================
 # CHECK VERSION
@@ -30,7 +31,7 @@ upgrade_type=$(ynh_check_app_version_changed)
 #=================================================
 # ENSURE DOWNWARD COMPATIBILITY
 #=================================================
-ynh_script_progression --message="Ensuring downward compatibility..."
+ynh_script_progression --message="Ensuring downward compatibility..." --weight=3
 
 # Fix is_public as a boolean value
 if [ "$is_public" = "Yes" ]; then
@@ -95,7 +96,7 @@ fi
 #=================================================
 # NGINX CONFIGURATION
 #=================================================
-ynh_script_progression --message="Upgrading nginx web server configuration..."
+ynh_script_progression --message="Upgrading NGINX web server configuration..."
 
 # Create a dedicated nginx config
 ynh_add_nginx_config
@@ -111,10 +112,10 @@ ynh_system_user_create --username=$app
 #=================================================
 # PHP-FPM CONFIGURATION
 #=================================================
-ynh_script_progression --message="Upgrading php-fpm configuration..." --weight=3
+ynh_script_progression --message="Upgrading PHP-FPM configuration..." --weight=3
 
-# Create a dedicated php-fpm config
-ynh_add_fpm_config
+# Create a dedicated PHP-FPM config
+ynh_add_fpm_config --phpversion=$YNH_PHP_VERSION 
 
 #=================================================
 # GENERIC FINALIZATION
@@ -147,7 +148,7 @@ fi
 #=================================================
 # RELOAD NGINX
 #=================================================
-ynh_script_progression --message="Reloading nginx web server..."
+ynh_script_progression --message="Reloading NGINX web server..."
 
 ynh_systemd_action --service_name=nginx --action=reload
 
