@@ -10,7 +10,7 @@ Si vous n'avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour
 
 ## Vue d'ensemble
 
-PrivateBin est un logiciel libre, minimaliste, qui joue le rôle de Pastebin (coller-corbeille) où le serveur n'a aucune connaissance des données qu'il stocke.
+PrivateBin est un logiciel libre, minimaliste, qui joue le rôle de pastebin (coller-corbeille) où le serveur n'a aucune connaissance des données qu'il stocke.
 
 Les données sont chiffrées et déchiffrées dans le navigateur en utilisant la technologie AES 256bits en mode Galois Counter (GCM).
 
