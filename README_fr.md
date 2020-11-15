@@ -5,12 +5,12 @@
 
 *[Read this readme in english.](./README.md)* 
 
-> *Ce package vous permet d'installer Privatebin rapidement et simplement sur un serveur Yunohost.  
+> *Ce package vous permet d'installer PrivateBin rapidement et simplement sur un serveur YunoHost.  
 Si vous n'avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour savoir comment l'installer et en profiter.*
 
 ## Vue d'ensemble
 
-PrivateBin est un logiciel libre, minimaliste, qui joue le rôle de Pastebin (coller-corbeille) où le serveur n'a aucune connaissance des données qu'il stocke.
+PrivateBin est un logiciel libre, minimaliste, qui joue le rôle de pastebin (coller-corbeille) où le serveur n'a aucune connaissance des données qu'il stocke.
 
 Les données sont chiffrées et déchiffrées dans le navigateur en utilisant la technologie AES 256bits en mode Galois Counter (GCM).
 
@@ -33,6 +33,7 @@ Il reste cependant compatible avec le schéma original de stockage des données 
 ## Documentation
 
  * Documentation officielle : https://github.com/PrivateBin/PrivateBin/wiki
+ * Documentation YunoHost : https://yunohost.org/#/app_zerobin_fr
 
 ## Caractéristiques spécifiques YunoHost
 
@@ -40,32 +41,28 @@ Il reste cependant compatible avec le schéma original de stockage des données 
 
 #### Architectures supportées
 
-* x86-64b - [![Build Status](https://ci-apps.yunohost.org/ci/logs/zerobin%20%28Apps%29.svg)](https://ci-apps.yunohost.org/ci/apps/zerobin/)
+* x86-64 - [![Build Status](https://ci-apps.yunohost.org/ci/logs/zerobin%20%28Apps%29.svg)](https://ci-apps.yunohost.org/ci/apps/zerobin/)
 * ARMv8-A - [![Build Status](https://ci-apps-arm.yunohost.org/ci/logs/zerobin%20%28Apps%29.svg)](https://ci-apps-arm.yunohost.org/ci/apps/zerobin/)
-* Jessie x86-64b - [![Build Status](https://ci-stretch.nohost.me/ci/logs/zerobin%20%28Apps%29.svg)](https://ci-stretch.nohost.me/ci/apps/zerobin/)
 
 ## Limitations
 
 ## Informations additionnelles
 
 Dans la [documentation de mise à jour](https://github.com/PrivateBin/PrivateBin/wiki/Configuration#zerobincompatibility) de Privatebin, il est précisé que :
-
 * Pour une compatibilité complète avec Zerobin et le déchiffrement de tous les vieux "paste", vous devriez activer cette option. Cependant, ce n'est pas recommandé pour les nouvelles installations car cela affaiblit la sécurité de votre instance PrivateBin.
 * Ceci signifie que nous avons décidé de supprimer ce répertoire pour permettre la sécurisation des données. Vous pouvez sauvegarder le répertoire 'data', si vous voulez conservez vos données. Mais vous devriez savoir que cela réduit la sécurité de votre application.
 
 ## Liens
 
- * Signaler un bug: https://github.com/YunoHost-Apps/zerobin_ynh/issues
+ * Signaler un bug : https://github.com/YunoHost-Apps/zerobin_ynh/issues
  * Site de l'application PrivateBin : https://privatebin.info/
  * Dépot de l'application principale : https://github.com/PrivateBin/PrivateBin
  * Site web YunoHost : https://yunohost.org/
 
 ---
 
-Informations pour les développeurs
-----------------
+## Informations pour les développeurs
 
-**Seulement si vous voulez utiliser une branche de test pour le codage, au lieu de fusionner directement dans la banche principale.**
 Merci de faire vos pull request dans la [branche testing](https://github.com/YunoHost-Apps/zerobin_ynh/tree/testing).
 
 Pour essayer la branche testing, procédez comme suit.
