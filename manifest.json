@@ -3,52 +3,40 @@
     "id": "zerobin",
     "packaging_format": 1,
     "description": {
-        "en": "A minimalist, opensource online pastebin where the server has zero knowledge of pasted data",
-        "fr": "Un pastebin minimaliste, libre et où le serveur n'a aucune connaissance des données copiées"
+        "en": "Minimalist pastebin where the server has zero knowledge of pasted data",
+        "fr": "Pastebin minimaliste où le serveur n'a aucune connaissance des données copiées"
     },
-    "version": "1.3.4~ynh1",
-    "url": "http://sebsauvage.net/wiki/doku.php?id=php:zerobin",
+    "version": "1.3.4~ynh2",
+    "url": "https://github.com/PrivateBin/PrivateBin",
     "license": "Zlib",
     "maintainer": {
         "name": "julien",
         "email": "julien.malik@paraiso.me"
     },
     "requirements": {
-        "yunohost": ">= 3.5"
+        "yunohost": ">= 4.1.0"
     },
     "multi_instance": true,
     "services": [
         "nginx",
-        "php5-fpm"
+        "php7.3-fpm"
     ],
     "arguments": {
         "install" : [
             {
                 "name": "domain",
                 "type": "domain",
-                "ask": {
-                    "en": "Choose a domain for Zerobin",
-                    "fr": "Choisissez un domaine pour Zerobin"
-                },
-                "example": "domain.org"
+                "example": "example.com"
             },
             {
                 "name": "path",
                 "type": "path",
-                "ask": {
-                    "en": "Choose a path for Zerobin",
-                    "fr": "Choisissez un chemin pour Zerobin"
-                },
                 "example": "/zerobin",
                 "default": "/zerobin"
             },
             {
                 "name": "is_public",
                 "type": "boolean",
-                "ask": {
-                    "en": "Is it a public Zerobin site ?",
-                    "fr": "Est-ce un site public ?"
-                },
                 "default": true
             }
         ]
