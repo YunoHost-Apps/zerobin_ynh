@@ -14,11 +14,8 @@
 		upgrade=1	from_commit=42913fc917c98766b0cbba47a3b40148dffaac58
 		backup_restore=1
 		multi_instance=1
-		incorrect_path=1
 		port_already_use=0
 		change_url=1
-;;; Levels
-	Level 5=auto
 ;;; Options
 Email=
 Notification=none

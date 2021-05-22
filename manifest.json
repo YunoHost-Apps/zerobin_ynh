@@ -14,41 +14,29 @@
         "email": "julien.malik@paraiso.me"
     },
     "requirements": {
-        "yunohost": ">= 3.8.1"
+        "yunohost": ">= 4.1.0"
     },
     "multi_instance": true,
     "services": [
         "nginx",
-        "php7.0-fpm"
+        "php7.3-fpm"
     ],
     "arguments": {
         "install" : [
             {
                 "name": "domain",
                 "type": "domain",
-                "ask": {
-                    "en": "Choose a domain for Zerobin",
-                    "fr": "Choisissez un domaine pour Zerobin"
-                },
-                "example": "domain.org"
+                "example": "example.com"
             },
             {
                 "name": "path",
                 "type": "path",
-                "ask": {
-                    "en": "Choose a path for Zerobin",
-                    "fr": "Choisissez un chemin pour Zerobin"
-                },
                 "example": "/zerobin",
                 "default": "/zerobin"
             },
             {
                 "name": "is_public",
                 "type": "boolean",
-                "ask": {
-                    "en": "Is it a public site?",
-                    "fr": "Est-ce un site public ?"
-                },
                 "default": true
             }
         ]
