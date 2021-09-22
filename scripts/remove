@@ -50,7 +50,7 @@ ynh_remove_fpm_config
 #=================================================
 # REMOVE DEDICATED USER
 #=================================================
-ynh_script_progression --message="Removing the dedicated system user..."
+ynh_script_progression --message="Removing the dedicated system user..." --weight=1
 
 # Delete a system user
 ynh_system_user_delete --username=$app
