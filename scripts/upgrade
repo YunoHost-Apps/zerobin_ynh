@@ -8,6 +8,7 @@
 
 source _common.sh
 source /usr/share/yunohost/helpers
+
 #=================================================
 # LOAD SETTINGS
 #=================================================
@@ -23,6 +24,7 @@ phpversion=$(ynh_app_setting_get --app=$app --key=phpversion)
 #=================================================
 # CHECK VERSION
 #=================================================
+ynh_script_progression --message="Checking version..."
 
 upgrade_type=$(ynh_check_app_version_changed)
 
@@ -47,17 +49,17 @@ ynh_abort_if_errors
 #=================================================
 ynh_script_progression --message="Ensuring downward compatibility..." --weight=3
 
-# If final_path doesn't exist, create it
-if [ -z "$final_path" ]; then
-	final_path=/var/www/$app
-	ynh_app_setting_set --app=$app --key=final_path --value=$final_path
-fi
-
 # Cleaning legacy permissions
 if ynh_legacy_permissions_exists; then
 	ynh_legacy_permissions_delete_all
 
 	ynh_app_setting_delete --app=$app --key=is_public
+fi
+
+# If final_path doesn't exist, create it
+if [ -z "$final_path" ]; then
+	final_path=/var/www/$app
+	ynh_app_setting_set --app=$app --key=final_path --value=$final_path
 fi
 
 #=================================================
@@ -66,7 +68,7 @@ fi
 ynh_script_progression --message="Making sure dedicated system user exists..." --weight=2
 
 # Create a dedicated user (if not existing)
-ynh_system_user_create --username=$app --home_dir=$final_path
+ynh_system_user_create --username=$app --home_dir="$final_path"
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
@@ -88,20 +90,20 @@ chmod -R o-rwx "$final_path"
 chown -R $app:www-data "$final_path"
 
 #=================================================
+# PHP-FPM CONFIGURATION
+#=================================================
+ynh_script_progression --message="Upgrading PHP-FPM configuration..." --weight=3
+
+# Create a dedicated PHP-FPM config
+ynh_add_fpm_config
+
+#=================================================
 # NGINX CONFIGURATION
 #=================================================
 ynh_script_progression --message="Upgrading NGINX web server configuration..." --weight=2
 
 # Create a dedicated NGINX config
 ynh_add_nginx_config
-
-#=================================================
-# PHP-FPM CONFIGURATION
-#=================================================
-ynh_script_progression --message="Upgrading PHP-FPM configuration..." --weight=3
-
-# Create a dedicated PHP-FPM config
-ynh_add_fpm_config --phpversion=$YNH_PHP_VERSION 
 
 #=================================================
 # GENERIC FINALIZATION
