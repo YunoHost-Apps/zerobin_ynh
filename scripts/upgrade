@@ -95,7 +95,7 @@ chown -R $app:www-data "$final_path"
 ynh_script_progression --message="Upgrading PHP-FPM configuration..." --weight=3
 
 # Create a dedicated PHP-FPM config
-ynh_add_fpm_config
+ynh_add_fpm_config --usage=low --footprint=low
 
 #=================================================
 # NGINX CONFIGURATION
