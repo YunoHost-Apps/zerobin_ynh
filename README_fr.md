@@ -5,15 +5,16 @@ It shall NOT be edited by hand.
 
 # Zerobin pour YunoHost
 
-[![Niveau d'intégration](https://dash.yunohost.org/integration/zerobin.svg)](https://dash.yunohost.org/appci/app/zerobin) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/zerobin.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/zerobin.maintain.svg)  
+[![Niveau d’intégration](https://dash.yunohost.org/integration/zerobin.svg)](https://dash.yunohost.org/appci/app/zerobin) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/zerobin.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/zerobin.maintain.svg)
+
 [![Installer Zerobin avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=zerobin)
 
 *[Read this readme in english.](./README.md)*
 
-> *Ce package vous permet d'installer Zerobin rapidement et simplement sur un serveur YunoHost.
-Si vous n'avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour savoir comment l'installer et en profiter.*
+> *Ce package vous permet d’installer Zerobin rapidement et simplement sur un serveur YunoHost.
+Si vous n’avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour savoir comment l’installer et en profiter.*
 
-## Vue d'ensemble
+## Vue d’ensemble
 
 PrivateBin est un logiciel libre, minimaliste, qui joue le rôle de pastebin (coller-corbeille) où le serveur n'a aucune connaissance des données qu'il stocke.
 
@@ -23,14 +24,13 @@ Ce projet est un fork de ZeroBin, développé à l'origine par Sébastien Sauvag
 Il reste cependant compatible avec le schéma original de stockage des données Zerobin 0.19. Ainsi toutes les installations peuvent être mises à jour vers ce projet, sans perte de données.
 
 
-**Version incluse :** 1.3.5~ynh3
-
+**Version incluse :** 1.5.2~ynh1
 
 **Démo :** https://privatebin.net/
 
-## Captures d'écran
+## Captures d’écran
 
-![Capture d'écran de Zerobin](./doc/screenshots/screenshot.png)
+![Capture d’écran de Zerobin](./doc/screenshots/screenshot.png)
 
 ## Avertissements / informations importantes
 
@@ -42,11 +42,15 @@ Pour une compatibilité complète avec Zerobin et le déchiffrement de tous les 
 
 Ceci signifie que nous avons décidé de supprimer ce répertoire pour permettre la sécurisation des données. Vous pouvez sauvegarder le répertoire 'data', si vous voulez conservez vos données. Mais vous devriez savoir que cela réduit la sécurité de votre application.
 
+## :red_circle: Fonctions indésirables
+
+- **Replaced by another app**: Was replaced by another app. Please refer to the README.
+
 ## Documentations et ressources
 
-* Site officiel de l'app : <https://privatebin.info/>
-* Documentation officielle de l'admin : <https://github.com/PrivateBin/PrivateBin/wiki>
-* Dépôt de code officiel de l'app : <https://github.com/PrivateBin/PrivateBin>
+* Site officiel de l’app : <https://privatebin.info/>
+* Documentation officielle de l’admin : <https://github.com/PrivateBin/PrivateBin/wiki>
+* Dépôt de code officiel de l’app : <https://github.com/PrivateBin/PrivateBin>
 * Documentation YunoHost pour cette app : <https://yunohost.org/app_zerobin>
 * Signaler un bug : <https://github.com/YunoHost-Apps/zerobin_ynh/issues>
 
@@ -62,4 +66,4 @@ ou
 sudo yunohost app upgrade zerobin -u https://github.com/YunoHost-Apps/zerobin_ynh/tree/testing --debug
 ```
 
-**Plus d'infos sur le packaging d'applications :** <https://yunohost.org/packaging_apps>
+**Plus d’infos sur le packaging d’applications :** <https://yunohost.org/packaging_apps>
