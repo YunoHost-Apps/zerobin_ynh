@@ -16,7 +16,9 @@ ynh_script_progression --message="Setting up source files..." --weight=3
 
 # Download, check integrity, uncompress and patch the source from app.src
 ynh_setup_source --dest_dir="$install_dir"
-mkdir -p $install_dir/{data,tmp}
+
+ynh_script_progression --message="Adding config file..." --weight=1
+ynh_add_config --template="conf.php" --destination="$install_dir/cfg/conf.php"
 
 chmod 750 "$install_dir"
 chmod -R o-rwx "$install_dir"

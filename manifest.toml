@@ -58,3 +58,5 @@ ram.runtime = "50M"
 
     [resources.apt]
     packages = "php8.2 php8.2-gd"
+
+    [resources.data_dir]
