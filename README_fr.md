@@ -52,6 +52,7 @@ Ceci signifie que nous avons décidé de supprimer ce répertoire pour permettre
 * Documentation officielle de l’admin : <https://github.com/PrivateBin/PrivateBin/wiki>
 * Dépôt de code officiel de l’app : <https://github.com/PrivateBin/PrivateBin>
 * Documentation YunoHost pour cette app : <https://yunohost.org/app_zerobin>
+* YunoHost Store: <https://apps.yunohost.org/app/zerobin>
 * Signaler un bug : <https://github.com/YunoHost-Apps/zerobin_ynh/issues>
 
 ## Informations pour les développeurs

@@ -50,7 +50,7 @@ This means that we have decided to delete the directory that allows us to save t
 * Official app website: <https://privatebin.info/>
 * Official admin documentation: <https://github.com/PrivateBin/PrivateBin/wiki>
 * Upstream app code repository: <https://github.com/PrivateBin/PrivateBin>
-* YunoHost documentation for this app: <https://yunohost.org/app_zerobin>
+* YunoHost Store: <https://apps.yunohost.org/app/zerobin>
 * Report a bug: <https://github.com/YunoHost-Apps/zerobin_ynh/issues>
 
 ## Developer info
