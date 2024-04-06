@@ -9,7 +9,7 @@ description.fr = "Pastebin minimaliste où le serveur n'a aucune connaissance de
 
 version = "1.7.1~ynh1"
 
-maintainers = ["julien"]
+maintainers = []
 
 [upstream]
 license = "Zlib"
