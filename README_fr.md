@@ -44,7 +44,7 @@ Ceci signifie que nous avons décidé de supprimer ce répertoire pour permettre
 
 ## :red_circle: Anti-fonctionnalités
 
-- **Remplacé par une autre application**: A été remplacé par une autre application. Se référer au fichier README.
+- **Remplacé par une autre application **: A été remplacé par une autre application. Se référer au fichier README.
 
 ## Documentations et ressources
 
