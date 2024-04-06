@@ -24,7 +24,7 @@ Ce projet est un fork de ZeroBin, développé à l'origine par Sébastien Sauvag
 Il reste cependant compatible avec le schéma original de stockage des données Zerobin 0.19. Ainsi toutes les installations peuvent être mises à jour vers ce projet, sans perte de données.
 
 
-**Version incluse :** 1.3.5~ynh3
+**Version incluse :** 1.7.1~ynh1
 
 **Démo :** <https://privatebin.net/>
 
@@ -44,7 +44,7 @@ Ceci signifie que nous avons décidé de supprimer ce répertoire pour permettre
 
 ## :red_circle: Anti-fonctionnalités
 
-- **Remplacé par une autre application**: A été remplacé par une autre application. Se référer au fichier README.
+- **Remplacé par une autre application **: A été remplacé par une autre application. Se référer au fichier README.
 
 ## Documentations et ressources
 
