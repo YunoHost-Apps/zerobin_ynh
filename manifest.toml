@@ -9,7 +9,7 @@ description.fr = "Pastebin minimaliste où le serveur n'a aucune connaissance de
 
 version = "1.7.1~ynh1"
 
-maintainers = ["julien"]
+maintainers = []
 
 [upstream]
 license = "Zlib"
@@ -19,7 +19,7 @@ admindoc = "https://github.com/PrivateBin/PrivateBin/wiki"
 code = "https://github.com/PrivateBin/PrivateBin"
 
 [integration]
-yunohost = ">= 4.3.0"
+yunohost = ">= 11.2"
 architectures = "all"
 multi_instance = true
 ldap = false
@@ -30,11 +30,9 @@ ram.runtime = "50M"
 
 [install]
     [install.domain]
-    # this is a generic question - ask strings are automatically handled by Yunohost's core
     type = "domain"
 
     [install.path]
-    # this is a generic question - ask strings are automatically handled by Yunohost's core
     type = "path"
     default = "/zerobin"
 
