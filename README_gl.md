@@ -31,7 +31,7 @@ This is a fork of ZeroBin, originally developed by Sébastien Sauvage. It was re
 
 ![Captura de pantalla de Zerobin](./doc/screenshots/screenshot.png)
 
-## :red_circle: Caraterísticas cuestionables
+## :red_circle: Debes considerar
 
 - **Replaced by another app**: Was replaced by another app. Please refer to the README.
 
