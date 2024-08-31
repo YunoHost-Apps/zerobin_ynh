@@ -19,12 +19,15 @@ admindoc = "https://github.com/PrivateBin/PrivateBin/wiki"
 code = "https://github.com/PrivateBin/PrivateBin"
 
 [integration]
-yunohost = ">= 11.2.18"
+yunohost = ">= 11.2.29"
 helpers_version = "2.1"
 architectures = "all"
 multi_instance = true
+
 ldap = false
+
 sso = false
+
 disk = "50M"
 ram.build = "50M"
 ram.runtime = "50M"
@@ -57,4 +60,4 @@ ram.runtime = "50M"
     main.url = "/"
 
     [resources.apt]
-    packages = "php8.2 php8.2-gd"
+    packages = "php8.2, php8.2-gd"
