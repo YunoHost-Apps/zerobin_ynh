@@ -5,7 +5,7 @@
 
 # YunoHost 上的 Zerobin
 
-[![集成程度](https://dash.yunohost.org/integration/zerobin.svg)](https://dash.yunohost.org/appci/app/zerobin) ![工作状态](https://ci-apps.yunohost.org/ci/badges/zerobin.status.svg) ![维护状态](https://ci-apps.yunohost.org/ci/badges/zerobin.maintain.svg)
+[![集成程度](https://dash.yunohost.org/integration/zerobin.svg)](https://ci-apps.yunohost.org/ci/apps/zerobin/) ![工作状态](https://ci-apps.yunohost.org/ci/badges/zerobin.status.svg) ![维护状态](https://ci-apps.yunohost.org/ci/badges/zerobin.maintain.svg)
 
 [![使用 YunoHost 安装 Zerobin](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=zerobin)
 
