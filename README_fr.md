@@ -5,7 +5,7 @@ Il NE doit PAS être modifié à la main.
 
 # Zerobin pour YunoHost
 
-[![Niveau d’intégration](https://dash.yunohost.org/integration/zerobin.svg)](https://dash.yunohost.org/appci/app/zerobin) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/zerobin.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/zerobin.maintain.svg)
+[![Niveau d’intégration](https://dash.yunohost.org/integration/zerobin.svg)](https://ci-apps.yunohost.org/ci/apps/zerobin/) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/zerobin.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/zerobin.maintain.svg)
 
 [![Installer Zerobin avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=zerobin)
 
@@ -24,7 +24,7 @@ Ce projet est un fork de ZeroBin, développé à l'origine par Sébastien Sauvag
 Il reste cependant compatible avec le schéma original de stockage des données Zerobin 0.19. Ainsi toutes les installations peuvent être mises à jour vers ce projet, sans perte de données.
 
 
-**Version incluse :** 1.7.1~ynh1
+**Version incluse :** 1.7.1~ynh2
 
 **Démo :** <https://privatebin.net/>
 
