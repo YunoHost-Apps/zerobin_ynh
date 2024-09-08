@@ -5,7 +5,7 @@
 
 # YunoHost 上的 Zerobin
 
-[![集成程度](https://dash.yunohost.org/integration/zerobin.svg)](https://dash.yunohost.org/appci/app/zerobin) ![工作状态](https://ci-apps.yunohost.org/ci/badges/zerobin.status.svg) ![维护状态](https://ci-apps.yunohost.org/ci/badges/zerobin.maintain.svg)
+[![集成程度](https://dash.yunohost.org/integration/zerobin.svg)](https://ci-apps.yunohost.org/ci/apps/zerobin/) ![工作状态](https://ci-apps.yunohost.org/ci/badges/zerobin.status.svg) ![维护状态](https://ci-apps.yunohost.org/ci/badges/zerobin.maintain.svg)
 
 [![使用 YunoHost 安装 Zerobin](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=zerobin)
 
@@ -23,7 +23,7 @@ Data is encrypted/decrypted in the browser using 256bit AES in Galois Counter mo
 This is a fork of ZeroBin, originally developed by Sébastien Sauvage. It was refactored to allow easier and cleaner extensions and has now much more features than the original. It is however still fully compatible to the original ZeroBin 0.19 data storage scheme. Therefore such installations can be upgraded to this fork without loosing any data.
 
 
-**分发版本：** 1.7.1~ynh1
+**分发版本：** 1.7.1~ynh2
 
 **演示：** <https://privatebin.net/>
 

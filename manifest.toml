@@ -7,7 +7,7 @@ name = "Zerobin"
 description.en = "Minimalist pastebin where the server has zero knowledge of pasted data"
 description.fr = "Pastebin minimaliste où le serveur n'a aucune connaissance des données copiées"
 
-version = "1.7.1~ynh1"
+version = "1.7.1~ynh2"
 
 maintainers = []
 
@@ -19,11 +19,15 @@ admindoc = "https://github.com/PrivateBin/PrivateBin/wiki"
 code = "https://github.com/PrivateBin/PrivateBin"
 
 [integration]
-yunohost = ">= 11.2"
+yunohost = ">= 11.2.29"
+helpers_version = "2.1"
 architectures = "all"
 multi_instance = true
+
 ldap = false
+
 sso = false
+
 disk = "50M"
 ram.build = "50M"
 ram.runtime = "50M"
@@ -50,9 +54,10 @@ ram.runtime = "50M"
     [resources.system_user]
 
     [resources.install_dir]
+    group = "www-data:r-x"
 
     [resources.permissions]
     main.url = "/"
 
     [resources.apt]
-    packages = "php8.2 php8.2-gd"
+    packages = "php8.2, php8.2-gd"
