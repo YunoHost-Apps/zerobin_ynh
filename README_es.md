@@ -45,7 +45,7 @@ This is a fork of ZeroBin, originally developed by Sébastien Sauvage. It was re
 
 ## Información para desarrolladores
 
-Por favor enviar sus correcciones a la [`branch testing`](https://github.com/YunoHost-Apps/zerobin_ynh/tree/testing
+Por favor enviar sus correcciones a la [rama `testing`](https://github.com/YunoHost-Apps/zerobin_ynh/tree/testing).
 
 Para probar la rama `testing`, sigue asÍ:
 
