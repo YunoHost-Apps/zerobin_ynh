@@ -5,7 +5,9 @@ No se debe editar a mano.
 
 # Zerobin para Yunohost
 
-[![Nivel de integración](https://dash.yunohost.org/integration/zerobin.svg)](https://ci-apps.yunohost.org/ci/apps/zerobin/) ![Estado funcional](https://ci-apps.yunohost.org/ci/badges/zerobin.status.svg) ![Estado En Mantención](https://ci-apps.yunohost.org/ci/badges/zerobin.maintain.svg)
+[![Nivel de integración](https://apps.yunohost.org/badge/integration/zerobin)](https://ci-apps.yunohost.org/ci/apps/zerobin/)
+![Estado funcional](https://apps.yunohost.org/badge/state/zerobin)
+![Estado En Mantención](https://apps.yunohost.org/badge/maintained/zerobin)
 
 [![Instalar Zerobin con Yunhost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=zerobin)
 
@@ -45,7 +47,7 @@ This is a fork of ZeroBin, originally developed by Sébastien Sauvage. It was re
 
 ## Información para desarrolladores
 
-Por favor enviar sus correcciones a la [`branch testing`](https://github.com/YunoHost-Apps/zerobin_ynh/tree/testing
+Por favor enviar sus correcciones a la [rama `testing`](https://github.com/YunoHost-Apps/zerobin_ynh/tree/testing).
 
 Para probar la rama `testing`, sigue asÍ:
 
