@@ -5,7 +5,9 @@ Hij mag NIET handmatig aangepast worden.
 
 # Zerobin voor Yunohost
 
-[![Integratieniveau](https://dash.yunohost.org/integration/zerobin.svg)](https://ci-apps.yunohost.org/ci/apps/zerobin/) ![Mate van functioneren](https://ci-apps.yunohost.org/ci/badges/zerobin.status.svg) ![Onderhoudsstatus](https://ci-apps.yunohost.org/ci/badges/zerobin.maintain.svg)
+[![Integratieniveau](https://apps.yunohost.org/badge/integration/zerobin)](https://ci-apps.yunohost.org/ci/apps/zerobin/)
+![Mate van functioneren](https://apps.yunohost.org/badge/state/zerobin)
+![Onderhoudsstatus](https://apps.yunohost.org/badge/maintained/zerobin)
 
 [![Zerobin met Yunohost installeren](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=zerobin)
 
