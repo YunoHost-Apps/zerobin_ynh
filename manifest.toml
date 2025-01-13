@@ -47,9 +47,11 @@ ram.runtime = "50M"
     default = "visitors"
 
 [resources]
-        [resources.sources.main]
-        url = "https://github.com/PrivateBin/PrivateBin/archive/refs/tags/1.7.1.tar.gz"
-        sha256 = "136faa5ba0c2d51ace916a2c0b282f5c7d5376265406040c91730e28233367ff"
+    [resources.sources.main]
+    url = "https://github.com/PrivateBin/PrivateBin/archive/refs/tags/1.7.1.tar.gz"
+    sha256 = "136faa5ba0c2d51ace916a2c0b282f5c7d5376265406040c91730e28233367ff"
+
+    autoupdate.strategy = "latest_github_tag"
 
     [resources.system_user]
 

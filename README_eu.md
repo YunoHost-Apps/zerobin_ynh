@@ -5,7 +5,9 @@ EZ editatu eskuz.
 
 # Zerobin YunoHost-erako
 
-[![Integrazio maila](https://dash.yunohost.org/integration/zerobin.svg)](https://ci-apps.yunohost.org/ci/apps/zerobin/) ![Funtzionamendu egoera](https://ci-apps.yunohost.org/ci/badges/zerobin.status.svg) ![Mantentze egoera](https://ci-apps.yunohost.org/ci/badges/zerobin.maintain.svg)
+[![Integrazio maila](https://apps.yunohost.org/badge/integration/zerobin)](https://ci-apps.yunohost.org/ci/apps/zerobin/)
+![Funtzionamendu egoera](https://apps.yunohost.org/badge/state/zerobin)
+![Mantentze egoera](https://apps.yunohost.org/badge/maintained/zerobin)
 
 [![Instalatu Zerobin YunoHost-ekin](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=zerobin)
 

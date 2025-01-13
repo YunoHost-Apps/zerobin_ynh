@@ -5,7 +5,9 @@ NON debe editarse manualmente.
 
 # Zerobin para YunoHost
 
-[![Nivel de integración](https://dash.yunohost.org/integration/zerobin.svg)](https://ci-apps.yunohost.org/ci/apps/zerobin/) ![Estado de funcionamento](https://ci-apps.yunohost.org/ci/badges/zerobin.status.svg) ![Estado de mantemento](https://ci-apps.yunohost.org/ci/badges/zerobin.maintain.svg)
+[![Nivel de integración](https://apps.yunohost.org/badge/integration/zerobin)](https://ci-apps.yunohost.org/ci/apps/zerobin/)
+![Estado de funcionamento](https://apps.yunohost.org/badge/state/zerobin)
+![Estado de mantemento](https://apps.yunohost.org/badge/maintained/zerobin)
 
 [![Instalar Zerobin con YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=zerobin)
 
