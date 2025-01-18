@@ -4,8 +4,8 @@ packaging_format = 2
 
 id = "zerobin"
 name = "Zerobin"
-description.en = "Minimalist pastebin where the server has zero knowledge of pasted data"
-description.fr = "Pastebin minimaliste où le serveur n'a aucune connaissance des données copiées"
+description.en = "Pastebin where the server has zero knowledge of pasted data"
+description.fr = "Pastebin où le serveur ignore les données copiées"
 
 version = "1.7.5~ynh1"
 
@@ -19,13 +19,12 @@ admindoc = "https://github.com/PrivateBin/PrivateBin/wiki"
 code = "https://github.com/PrivateBin/PrivateBin"
 
 [integration]
-yunohost = ">= 11.2.29"
+yunohost = ">= 12.0.9"
 helpers_version = "2.1"
 architectures = "all"
 multi_instance = true
 
 ldap = false
-
 sso = false
 
 disk = "50M"
@@ -62,4 +61,4 @@ ram.runtime = "50M"
     main.url = "/"
 
     [resources.apt]
-    packages = "php8.2, php8.2-gd"
+    packages = "php8.3, php8.3-gd"
