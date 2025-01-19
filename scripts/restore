@@ -11,6 +11,17 @@ ynh_script_progression "Restoring the app main directory..."
 ynh_restore "$install_dir"
 
 #=================================================
+# RESTORE THE DATA DIR
+#=================================================
+ynh_script_progression --message="Restoring the data directory..." --weight=6
+
+ynh_restore_file --origin_path="$data_dir"
+
+chmod 750 "$data_dir"
+chmod -R o-rwx "$data_dir"
+chown -R $app:$app "$data_dir"
+
+#=================================================
 # RESTORE SYSTEM CONFIGURATIONS
 #=================================================
 ynh_script_progression "Restoring system configurations related to $app..."
