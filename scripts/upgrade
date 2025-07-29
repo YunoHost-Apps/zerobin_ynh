@@ -8,9 +8,18 @@ source /usr/share/yunohost/helpers
 #=================================================
 ynh_script_progression "Upgrading source files..."
 
-ynh_setup_source --dest_dir="$install_dir"
+if ynh_compare_current_package_version --comparison lt --version "1.7.1~ynh1"; then
+    ynh_script_progression --message="Moving data..." --weight=3
+    mv $install_dir/data/* $data_dir/
+fi
 
-mkdir -p $install_dir/{data,tmp}
+ynh_script_progression --message="Upgrading source files..." --weight=3
+
+ynh_setup_source --dest_dir="$install_dir" --full_replace
+
+ynh_script_progression --message="Upgrading config file..." --weight=1
+
+ynh_add_config --template="conf.php" --destination="$install_dir/cfg/conf.php"
 
 #=================================================
 # REAPPLY SYSTEM CONFIGURATIONS

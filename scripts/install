@@ -10,6 +10,9 @@ ynh_script_progression "Setting up source files..."
 
 ynh_setup_source --dest_dir="$install_dir"
 
+ynh_script_progression --message="Adding config file..." --weight=1
+ynh_add_config --template="conf.php" --destination="$install_dir/cfg/conf.php"
+
 mkdir -p $install_dir/{data,tmp}
 
 #=================================================
