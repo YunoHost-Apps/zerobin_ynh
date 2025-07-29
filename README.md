@@ -12,12 +12,16 @@ Pastebin where the server has zero knowledge of pasted data
 
 [![🌐 Official app website](https://img.shields.io/badge/Official_app_website-darkgreen?style=for-the-badge)](https://privatebin.info/)
 [![App Demo](https://img.shields.io/badge/App_Demo-blue?style=for-the-badge)](https://privatebin.net/)
-[![Version: 1.7.8~ynh1](https://img.shields.io/badge/Version-1.7.8~ynh1-rgba(0,150,0,1)?style=for-the-badge)](https://ci-apps.yunohost.org/ci/apps/zerobin/)
+[![Version: 2.0.0~ynh1](https://img.shields.io/badge/Version-2.0.0~ynh1-rgba(0,150,0,1)?style=for-the-badge)](https://ci-apps.yunohost.org/ci/apps/zerobin/)
 
 <div align="center">
 <a href="https://apps.yunohost.org/app/zerobin"><img height="100px" src="https://github.com/YunoHost/yunohost-artwork/raw/refs/heads/main/badges/neopossum-badges/badge_more_info_on_the_appstore.svg"/></a>
 <a href="https://github.com/YunoHost-Apps/zerobin_ynh/issues"><img height="100px" src="https://github.com/YunoHost/yunohost-artwork/raw/refs/heads/main/badges/neopossum-badges/badge_report_an_issue.svg"/></a>
 </div>
+
+
+## Screenshots
+![Screenshot of Zerobin](./doc/screenshots/screenshot.png)
 
 ## 📦 Developer info
 
