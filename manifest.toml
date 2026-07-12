@@ -7,7 +7,7 @@ name = "Zerobin"
 description.en = "Pastebin where the server has zero knowledge of pasted data"
 description.fr = "Pastebin où le serveur ignore les données copiées"
 
-version = "2.0.4~ynh1"
+version = "2.0.5~ynh1"
 
 maintainers = []
 
@@ -47,8 +47,8 @@ ram.runtime = "50M"
 
 [resources]
     [resources.sources.main]
-    url = "https://github.com/PrivateBin/PrivateBin/archive/refs/tags/2.0.4.tar.gz"
-    sha256 = "155d557d970bca3194385a316e19ac88cbbad56f88d60d9f3e9592c8ce996bdc"
+    url = "https://github.com/PrivateBin/PrivateBin/archive/refs/tags/2.0.5.tar.gz"
+    sha256 = "19903f421eaa1bd3e29e33706dddd41ffb0f77e03f2ad7ff9da15a5e734c957b"
 
     autoupdate.strategy = "latest_github_tag"
 
